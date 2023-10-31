@@ -11,7 +11,21 @@
     "href": "example_1.html",
     "title": "Example #1",
     "section": "",
-    "text": "Some examples of non-proprietary analysis.\nWork in progress"
+    "text": "This seems like an excellent starting point pbmc3k\n\nPeripheral Blood Mononuclear Cells (PBMC)\n10X Genomics\n2,700 single cells\nsequenced on Illumina NextSeq 500"
+  },
+  {
+    "objectID": "example_1.html#overview",
+    "href": "example_1.html#overview",
+    "title": "Example #1",
+    "section": "",
+    "text": "This seems like an excellent starting point pbmc3k\n\nPeripheral Blood Mononuclear Cells (PBMC)\n10X Genomics\n2,700 single cells\nsequenced on Illumina NextSeq 500"
+  },
+  {
+    "objectID": "example_1.html#import-data",
+    "href": "example_1.html#import-data",
+    "title": "Example #1",
+    "section": "Import Data",
+    "text": "Import Data\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(Seurat)\n\nAttaching SeuratObject\n\n\n'SeuratObject' was built under R 4.3.0 but the current version is\n4.3.1; it is recomended that you reinstall 'SeuratObject' as the ABI\nfor R may have changed\n\n\nSeurat v4 was just loaded with SeuratObject v5; disabling v5 assays and\nvalidation routines, and ensuring assays work in strict v3/v4\ncompatibility mode\n\nlibrary(patchwork)\n\n# Data downloaded into git repo \n#   29 MB for barcodes, genes and matrix files \npbmc.data &lt;- Read10X(data.dir = \"./filtered_gene_bc_matrices/hg19/\")\n# Initialize the Seurat object with the raw (non-normalized data).\npbmc &lt;- CreateSeuratObject(counts = pbmc.data, \n                           project = \"pbmc3k\", \n                           min.cells = 3, \n                           min.features = 200)\n\nWarning: Feature names cannot have underscores ('_'), replacing with dashes\n('-')\n\nWarning: Feature names cannot have underscores ('_'), replacing with dashes\n('-')\n\n# looks good\npbmc\n\nAn object of class Seurat \n13714 features across 2700 samples within 1 assay \nActive assay: RNA (13714 features, 0 variable features)\n 2 layers present: counts, data"
   },
   {
     "objectID": "index.html",
