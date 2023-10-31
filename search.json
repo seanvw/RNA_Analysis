@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "example_3.html",
+    "href": "example_3.html",
+    "title": "Example #1",
+    "section": "",
+    "text": "Some examples of non-proprietary analysis.\nWork in progress"
+  },
+  {
     "objectID": "example_1.html",
     "href": "example_1.html",
     "title": "Example #1",
@@ -19,5 +26,12 @@
     "title": "About",
     "section": "",
     "text": "About me"
+  },
+  {
+    "objectID": "example_2.html",
+    "href": "example_2.html",
+    "title": "Example #1",
+    "section": "",
+    "text": "Some examples of non-proprietary analysis.\nWork in progress"
   }
 ]
