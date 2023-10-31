@@ -18,7 +18,7 @@
     "href": "index.html",
     "title": "RNA Seq Analysis",
     "section": "",
-    "text": "Some examples of non-proprietary analysis.\nWork in progress"
+    "text": "Having some experience of analyzing gene expression data with various tools from GeneSpring through edgeR and more recently having followed tutorials on Single-cell RNA-seq data analysis using Chipster (Seurat based workflows including SingleR, CellDex, CCA, RPCA [Chipster Tutorials, 2023]), my objective is to go deeper into Seurat to refine understanding using publicly available data-sets.\nSome examples of non-proprietary analysis. Work in progress"
   },
   {
     "objectID": "about.html",
