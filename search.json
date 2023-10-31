@@ -1,9 +1,23 @@
 [
   {
+    "objectID": "example_1.html",
+    "href": "example_1.html",
+    "title": "Example #1",
+    "section": "",
+    "text": "Some examples of non-proprietary analysis.\nWork in progress"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "RNA Seq Analysis",
+    "section": "",
+    "text": "Some examples of non-proprietary analysis.\nWork in progress"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "to do"
+    "text": "About me"
   }
 ]
