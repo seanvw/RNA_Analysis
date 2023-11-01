@@ -164,6 +164,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#meta-data-stash-calculations-and-basis-for-filtering" id="toc-meta-data-stash-calculations-and-basis-for-filtering" class="nav-link" data-scroll-target="#meta-data-stash-calculations-and-basis-for-filtering">Meta data stash, calculations and basis for filtering</a></li>
   <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
   </ul></li>
+  <li><a href="#normalization" id="toc-normalization" class="nav-link" data-scroll-target="#normalization">Normalization</a></li>
+  <li><a href="#highly-variable-features" id="toc-highly-variable-features" class="nav-link" data-scroll-target="#highly-variable-features">Highly variable features</a></li>
+  <li><a href="#data-scaling" id="toc-data-scaling" class="nav-link" data-scroll-target="#data-scaling">Data Scaling</a></li>
+  <li><a href="#dimension-reduction" id="toc-dimension-reduction" class="nav-link" data-scroll-target="#dimension-reduction">Dimension reduction</a></li>
   </ul>
 </nav>
     </div>
@@ -505,9 +509,127 @@ AAACCGTGTATGCG-1     pbmc3k        980          521  1.2244898</code></pre>
 </div>
 </div>
 <p>Remember <strong>nFeature_RNA i</strong>s the number of detected genes and the <strong>nCount_RNA</strong> is the total counts per drop (after filtering that should now be per single cell though in the case the one outlier point makes me wonder….seems like ~2000 features is the upper range….).</p>
-
-
+<p>Another thought in passing: <em>presumably alternative splice forms are mapped to the same gene as standard practice. Would like to look for an example of where splice forms are treated as separate entities which should be in principle possible.</em></p>
 </section>
+</section>
+<section id="normalization" class="level2">
+<h2 class="anchored" data-anchor-id="normalization">Normalization</h2>
+<blockquote class="blockquote">
+<p>After removing unwanted cells from the data-set, the next step is to normalize the data. By default, we employ a global-scaling normalization method "LogNormalize" that normalizes the feature expression measurements for each cell by the total expression, multiplies this by a scale factor (10,000 by default), and log-transforms the result. Normalized values are stored in <code>pbmc[["RNA"]]@data</code>.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(pbmc, <span class="at">normalization.method =</span> <span class="st">"LogNormalize"</span>, </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">scale.factor =</span> <span class="dv">10000</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Show a small sample of data</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Again, it's a sparse matrix </span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co"># class(pbmc[["RNA"]]@data)</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pbmc[[<span class="st">"RNA"</span>]]<span class="sc">@</span>data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Formal class 'dgCMatrix' [package "Matrix"] with 6 slots
+  ..@ i       : int [1:2238732] 29 73 80 148 163 184 186 227 229 230 ...
+  ..@ p       : int [1:2639] 0 779 2131 3260 4220 4741 5522 6304 7094 7626 ...
+  ..@ Dim     : int [1:2] 13714 2638
+  ..@ Dimnames:List of 2
+  .. ..$ : chr [1:13714] "AL627309.1" "AP006222.2" "RP11-206L10.2" "RP11-206L10.9" ...
+  .. ..$ : chr [1:2638] "AAACATACAACCAC-1" "AAACATTGAGCTAC-1" "AAACATTGATCAGC-1" "AAACCGTGCTTCCG-1" ...
+  ..@ x       : num [1:2238732] 1.64 1.64 2.23 1.64 1.64 ...
+  ..@ factors : list()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 10 rows, 3 columns</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>pbmc[[<span class="st">"RNA"</span>]]<span class="sc">@</span>data[<span class="dv">10</span><span class="sc">:</span><span class="dv">20</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>11 x 3 sparse Matrix of class "dgCMatrix"
+             AAACATACAACCAC-1 AAACATTGAGCTAC-1 AAACATTGATCAGC-1
+HES4                        .         .                .       
+RP11-54O7.11                .         .                .       
+ISG15                       .         .                1.429744
+AGRN                        .         .                .       
+C1orf159                    .         .                .       
+TNFRSF18                    .         1.625141         .       
+TNFRSF4                     .         .                .       
+SDF4                        .         .                1.429744
+B3GALT6                     .         .                .       
+FAM132A                     .         .                .       
+UBE2J2                      .         .                .       </code></pre>
+</div>
+</div>
+</section>
+<section id="highly-variable-features" class="level2">
+<h2 class="anchored" data-anchor-id="highly-variable-features">Highly variable features</h2>
+<blockquote class="blockquote">
+<p>We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). We and <a href="https://www.nature.com/articles/nmeth.2645">others</a> have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.</p>
+<p>Our procedure in Seurat is described in detail <a href="https://doi.org/10.1016/j.cell.2019.05.031">here</a>, and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the <a href="https://satijalab.org/seurat/reference/findvariablefeatures"><code>FindVariableFeatures()</code></a> function. By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(pbmc, <span class="at">selection.method =</span> <span class="st">"vst"</span>, <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify the 10 most highly variable genes</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>top10 <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">VariableFeatures</span>(pbmc), <span class="dv">10</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plot variable features with and without labels</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">VariableFeaturePlot</span>(pbmc)</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">&lt;-</span> <span class="fu">LabelPoints</span>(<span class="at">plot =</span> plot1, <span class="at">points =</span> top10, <span class="at">repel =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>When using repel, set xnudge and ynudge to 0 for optimal results</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>plot1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Transformation introduced infinite values in continuous x-axis</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>plot2 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Transformation introduced infinite values in continuous x-axis</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="data-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="data-scaling">Data Scaling</h2>
+<p>Normally i do a mean 0, standard dev 1 … but the method used here is more sophisticated.</p>
+<blockquote class="blockquote">
+<p>Next, we apply a linear transformation ('scaling') that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The <a href="https://satijalab.org/seurat/reference/scaledata"><code>ScaleData()</code></a> function:</p>
+<ul>
+<li><p>Shifts the expression of each gene, so that the mean expression across cells is 0</p></li>
+<li><p>Scales the expression of each gene, so that the variance across cells is 1</p>
+<ul>
+<li>This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate</li>
+</ul></li>
+<li><p>The results of this are stored in <code>pbmc[["RNA"]]@scale.data</code></p></li>
+</ul>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>all.genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(pbmc)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(pbmc, <span class="at">features =</span> all.genes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Centering and scaling data matrix</code></pre>
+</div>
+</div>
+<p><strong>And there is a faster way…</strong></p>
+<blockquote class="blockquote">
+<p>Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. Therefore, the default in <a href="https://satijalab.org/seurat/reference/scaledata"><code>ScaleData()</code></a> is only to perform scaling on the previously identified variable features (2,000 by default). To do this, omit the <code>features</code> argument in the previous function call, i.e.</p>
+<pre><code>pbmc &lt;- ScaleData(pbmc)</code></pre>
+<p>Your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with <a href="https://satijalab.org/seurat/reference/doheatmap"><code>DoHeatmap()</code></a>) require genes in the heatmap to be scaled, to make sure highly-expressed genes don't dominate the heatmap. To make sure we don't leave any genes out of the heatmap later, we are scaling all genes in this tutorial.</p>
+</blockquote>
+<p>This following section refers to the paper <strong>Normalization and variance stabilization of single-cell RNA-seq data using regularized negative binomial regression</strong> Christoph Hafemeister &amp; Rahul Satija (2019). I have this in paper notes as the method to deal with cell cycle genes. Interesting would be circadian cycle - I came across experimental data before that hadn’t considered this aspect in the experimental design!!</p>
+<blockquote class="blockquote">
+<p><strong>How can I remove unwanted sources of variation, as in Seurat v2?</strong></p>
+<p>In <code>Seurat v2</code> we also use the <a href="https://satijalab.org/seurat/reference/scaledata"><code>ScaleData()</code></a> function to remove unwanted sources of variation from a single-cell dataset. For example, we could 'regress out' heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. These features are still supported in <a href="https://satijalab.org/seurat/reference/scaledata"><code>ScaleData()</code></a> in <code>Seurat v3</code>, i.e.:</p>
+<pre><code>pbmc &lt;- ScaleData(pbmc, vars.to.regress = "percent.mt")</code></pre>
+<p>However, particularly for advanced users who would like to use this functionality, we strongly recommend the use of our new normalization workflow, <a href="https://satijalab.org/seurat/reference/sctransform"><code>SCTransform()</code></a>. The method is described in our <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1874-1">paper</a>, with a separate vignette using Seurat v3 <a href="https://satijalab.org/seurat/articles/sctransform_vignette">here</a>. As with <a href="https://satijalab.org/seurat/reference/scaledata"><code>ScaleData()</code></a>, the function <a href="https://satijalab.org/seurat/reference/sctransform"><code>SCTransform()</code></a> also includes a <code>vars.to.regress</code> parameter.</p>
+</blockquote>
+</section>
+<section id="dimension-reduction" class="level2">
+<h2 class="anchored" data-anchor-id="dimension-reduction">Dimension reduction</h2>
+<p>to be continued…</p>
+
+
 </section>
 
 </main> <!-- /main -->
