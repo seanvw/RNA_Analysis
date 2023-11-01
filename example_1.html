@@ -152,7 +152,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a>
+  <ul class="collapse">
+  <li><a href="#libraries" id="toc-libraries" class="nav-link" data-scroll-target="#libraries">Libraries</a></li>
+  <li><a href="#indepenedent-look-at-data-files" id="toc-indepenedent-look-at-data-files" class="nav-link" data-scroll-target="#indepenedent-look-at-data-files">Indepenedent look at data files</a></li>
+  <li><a href="#standard-import" id="toc-standard-import" class="nav-link" data-scroll-target="#standard-import">Standard import</a></li>
+  </ul></li>
+  <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a>
+  <ul class="collapse">
+  <li><a href="#meta-data-stash-calculations-and-basis-for-filtering" id="toc-meta-data-stash-calculations-and-basis-for-filtering" class="nav-link" data-scroll-target="#meta-data-stash-calculations-and-basis-for-filtering">Meta data stash, calculations and basis for filtering</a></li>
+  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -188,8 +199,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 </section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<ul>
+<li>Highly Parallel Genome-wide Expression Profiling of Individual Cells Using Nanoliter Droplets
+<ul>
+<li><p><a href="https://doi.org/10.1016/j.cell.2015.05.002" title="Cell, 2015">Cell, 2015</a></p></li>
+<li><p><a href="https://www.cell.com/cell/fulltext/S0092-8674(15)00549-8?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867415005498%3Fshowall%3Dtrue" title="Drop-Seq barcoding schematic">Drop-Seq barcoding schematic</a></p>
+<ul>
+<li><p>primer bead, sequence domains</p>
+<ul>
+<li><p>|— PCR —| — cell barcode —| — UMI — | — polyT<sub>27</sub> — |</p></li>
+<li><p>UMI: Unique Molecular IDs region</p></li>
+</ul></li>
+</ul></li>
+<li><p>Paired end reads</p></li>
+</ul></li>
+</ul>
+</section>
 <section id="import-data" class="level2">
 <h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
+<section id="libraries" class="level3">
+<h3 class="anchored" data-anchor-id="libraries">Libraries</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -220,16 +251,114 @@ for R may have changed</code></pre>
 validation routines, and ensuring assays work in strict v3/v4
 compatibility mode</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Data downloaded into git repo </span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   29 MB for barcodes, genes and matrix files </span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>pbmc.data <span class="ot">&lt;-</span> <span class="fu">Read10X</span>(<span class="at">data.dir =</span> <span class="st">"./filtered_gene_bc_matrices/hg19/"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the Seurat object with the raw (non-normalized data).</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> pbmc.data, </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">project =</span> <span class="st">"pbmc3k"</span>, </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">min.cells =</span> <span class="dv">3</span>, </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                           <span class="at">min.features =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data downloaded into git repo </span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   29 MB for barcodes, genes and matrix files </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: these data are already filtered for barcodes within data</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># unfiltered would include all possible barcodes </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (all synthesized barcodes or all theoretical possibilites given</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># a certain n of synthesis cycles? would need to delve into bead synthesis here)</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>data_dir <span class="ot">&lt;-</span> <span class="st">"./filtered_gene_bc_matrices/hg19/"</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="at">path =</span> data_dir)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "barcodes.tsv" "genes.tsv"    "matrix.mtx"  </code></pre>
+</div>
+</div>
+</section>
+<section id="indepenedent-look-at-data-files" class="level3">
+<h3 class="anchored" data-anchor-id="indepenedent-look-at-data-files">Indepenedent look at data files</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># indepenedant look at files to be grounded..</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># TSVs</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>genes_tsv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(data_dir, <span class="st">"genes.tsv"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"n genes: "</span>,<span class="fu">nrow</span>(genes_tsv), <span class="st">". Some rows..."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "n genes: 32738. Some rows..."</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(genes_tsv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               V1           V2
+1 ENSG00000243485   MIR1302-10
+2 ENSG00000237613      FAM138A
+3 ENSG00000186092        OR4F5
+4 ENSG00000238009 RP11-34P13.7
+5 ENSG00000239945 RP11-34P13.8
+6 ENSG00000237683   AL627309.1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(genes_tsv)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>barcode_tsv <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(data_dir, <span class="st">"barcodes.tsv"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">paste0</span>(<span class="st">"n cell barcodes: "</span>, <span class="fu">nrow</span>(barcode_tsv), <span class="st">". Some rows..."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "n cell barcodes: 2700. Some rows..."</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(barcode_tsv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                V1
+1 AAACATACAACCAC-1
+2 AAACATTGAGCTAC-1
+3 AAACATTGATCAGC-1
+4 AAACCGTGCTTCCG-1
+5 AAACCGTGTATGCG-1
+6 AAACGCACTGGTAC-1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(barcode_tsv)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample of matrix </span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># line 3 is n genes, n cells (barcodes), n lines of data  </span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># line &gt;3 gene</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># gene_id barcode_id, umi_count</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">readLines</span>(<span class="fu">paste0</span>(data_dir, <span class="st">"matrix.mtx"</span>),<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "%%MatrixMarket matrix coordinate real general"
+ [2] "%"                                            
+ [3] "32738 2700 2286884"                           
+ [4] "32709 1 4"                                    
+ [5] "32707 1 1"                                    
+ [6] "32706 1 10"                                   
+ [7] "32704 1 1"                                    
+ [8] "32703 1 5"                                    
+ [9] "32702 1 6"                                    
+[10] "32700 1 10"                                   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we can see sparsity from these numbers</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>(<span class="dv">1</span> <span class="sc">-</span> (<span class="dv">2286884</span> <span class="sc">/</span> (<span class="dv">32738</span> <span class="sc">*</span> <span class="dv">2700</span>))) <span class="sc">*</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 97.41281</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sparse Matrix is a "dgTMatrix"</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>sparse_m <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">readMM</span>(<span class="fu">paste0</span>(data_dir, <span class="st">"matrix.mtx"</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#class(sparse_m)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>n_row_genes <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sparse_m)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>n_col_cells <span class="ot">&lt;-</span> <span class="fu">ncol</span>(sparse_m)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>sparsity <span class="ot">&lt;-</span> <span class="fu">round</span>( <span class="fu">sum</span>(sparse_m <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">/</span> <span class="fu">length</span>(sparse_m)  <span class="sc">*</span> <span class="dv">100</span>,<span class="dv">2</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>dgTMatrix_summary <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"n_row_genes: "</span>, n_row_genes, </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                            <span class="st">", n_col_cells: "</span>, n_col_cells, </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>                            <span class="st">", sparsity: "</span>, sparsity, <span class="st">" %"</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>dgTMatrix_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "n_row_genes: 32738, n_col_cells: 2700, sparsity: 97.41 %"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(sparse_m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="standard-import" class="level3">
+<h3 class="anchored" data-anchor-id="standard-import">Standard import</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creates dgCMatrix of all 3 files content</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>pbmc.data <span class="ot">&lt;-</span> <span class="fu">Read10X</span>(<span class="at">data.dir =</span> data_dir)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># class(pbmc.data)</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Seurat object with the raw (non-normalized data).</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep genes expressed in at least min.cells</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Include cells where at least min.features are detected</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> pbmc.data, </span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                           <span class="at">project =</span> <span class="st">"pbmc3k"</span>, </span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                           <span class="at">min.cells =</span> <span class="dv">3</span>, </span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                           <span class="at">min.features =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Feature names cannot have underscores ('_'), replacing with dashes
 ('-')
@@ -237,8 +366,10 @@ compatibility mode</code></pre>
 Warning: Feature names cannot have underscores ('_'), replacing with dashes
 ('-')</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># looks good</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pbmc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Seurat object has reduced number of features (genes)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and possiblly samples (cells) with harsher paremeters</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># min.cells = 50, min.features = 400</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>pbmc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>An object of class Seurat 
 13714 features across 2700 samples within 1 assay 
@@ -246,8 +377,137 @@ Active assay: RNA (13714 features, 0 variable features)
  2 layers present: counts, data</code></pre>
 </div>
 </div>
+</section>
+</section>
+<section id="pre-processing" class="level2">
+<h2 class="anchored" data-anchor-id="pre-processing">Pre-processing</h2>
+<p>Blockquote:</p>
+<blockquote class="blockquote">
+<p>Seurat allows you to easily explore QC metrics and filter cells based on any user-defined criteria. A few QC metrics <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4758103/">commonly used</a> by the community include</p>
+<ul>
+<li><p>The number of unique genes detected in each cell.</p>
+<ul>
+<li><p>Low-quality cells or empty droplets will often have very few genes</p></li>
+<li><p>Cell doublets or multiplets may exhibit an aberrantly high gene count</p></li>
+</ul></li>
+<li><p>Similarly, the total number of molecules detected within a cell (correlates strongly with unique genes)</p></li>
+<li><p>The percentage of reads that map to the mitochondrial genome</p>
+<ul>
+<li><p>Low-quality / dying cells often exhibit extensive mitochondrial contamination</p></li>
+<li><p>We calculate mitochondrial QC metrics with the <a href="https://satijalab.org/seurat/reference/percentagefeatureset"><code>PercentageFeatureSet()</code></a> function, which calculates the percentage of counts originating from a set of features</p></li>
+<li><p>We use the set of all genes starting with <code>MT-</code> as a set of mitochondrial genes</p></li>
+</ul></li>
+</ul>
+</blockquote>
+<section id="meta-data-stash-calculations-and-basis-for-filtering" class="level3">
+<h3 class="anchored" data-anchor-id="meta-data-stash-calculations-and-basis-for-filtering">Meta data stash, calculations and basis for filtering</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Stashing meta data</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pbmc<span class="sc">@</span>meta.data, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 orig.ident nCount_RNA nFeature_RNA
+AAACATACAACCAC-1     pbmc3k       2419          779
+AAACATTGAGCTAC-1     pbmc3k       4903         1352
+AAACATTGATCAGC-1     pbmc3k       3147         1129
+AAACCGTGCTTCCG-1     pbmc3k       2639          960
+AAACCGTGTATGCG-1     pbmc3k        980          521</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The [[ operator can add columns to object metadata. </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># In this case the % mitochondrial DNA based on syntax of gene naming</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>pbmc[[<span class="st">"percent.mt"</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(pbmc, <span class="at">pattern =</span> <span class="st">"^MT-"</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pbmc<span class="sc">@</span>meta.data, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 orig.ident nCount_RNA nFeature_RNA percent.mt
+AAACATACAACCAC-1     pbmc3k       2419          779  3.0177759
+AAACATTGAGCTAC-1     pbmc3k       4903         1352  3.7935958
+AAACATTGATCAGC-1     pbmc3k       3147         1129  0.8897363
+AAACCGTGCTTCCG-1     pbmc3k       2639          960  1.7430845
+AAACCGTGTATGCG-1     pbmc3k        980          521  1.2244898</code></pre>
+</div>
+</div>
+<p>The MT- genes from genes.csv from a bash shell grep. Sure there is a way to get the same from Seurat object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash grep</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">'\tMT-'</span> ./filtered_gene_bc_matrices/hg19/genes.tsv </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ENSG00000198888 MT-ND1
+ENSG00000198763 MT-ND2
+ENSG00000198804 MT-CO1
+ENSG00000198712 MT-CO2
+ENSG00000228253 MT-ATP8
+ENSG00000198899 MT-ATP6
+ENSG00000198938 MT-CO3
+ENSG00000198840 MT-ND3
+ENSG00000212907 MT-ND4L
+ENSG00000198886 MT-ND4
+ENSG00000198786 MT-ND5
+ENSG00000198695 MT-ND6
+ENSG00000198727 MT-CYB</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize QC metrics as a violin plot</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"nFeature_RNA"</span>, <span class="st">"nCount_RNA"</span>, <span class="st">"percent.mt"</span>),</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">ncol =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># FeatureScatter is typically used to visualize feature-feature relationships </span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but can be used for anything calculated by the object, </span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># i.e. columns in object metadata, PC scores etc.</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(pbmc, <span class="at">feature1 =</span> <span class="st">"nCount_RNA"</span>, <span class="at">feature2 =</span> <span class="st">"percent.mt"</span>)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(pbmc, <span class="at">feature1 =</span> <span class="st">"nCount_RNA"</span>, <span class="at">feature2 =</span> <span class="st">"nFeature_RNA"</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>plot1 <span class="sc">+</span> plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="filtering" class="level3">
+<h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
+<p>Some “<strong>exceptions</strong>” are dealt with at this stage</p>
+<ul>
+<li><p>A high ratio of <em>mitochondrial DNA:nuclear DNA</em> is typical of a <strong>dead or broken cell</strong></p></li>
+<li><p><strong>Multiple cells per drop</strong> is atypical but they can be picked up by high number of RNA counts</p></li>
+<li><p><strong>Empties</strong> are drops without intact cells but produce signal due to background RNA molecules from lyzed cells: they are filtered by having low gene (feature) count but that was already done in this case when the data was imported (see earlier)</p></li>
+<li><p>There can be other issues e.g.&nbsp;barcode synthesis errors. Need to fix barcode/remove cell.</p></li>
+<li><p>This filtering is at least kingdom specific - think of plant cells and chloroplast RNA, guard cells and endoreduplication….and rapidly dividing cultures of yeast and microbial cells that at the population level partly 2n</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># apply filters and overwrite the object!</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">subset</span>(pbmc, <span class="at">subset =</span> nFeature_RNA <span class="sc">&gt;</span> <span class="dv">200</span> <span class="sc">&amp;</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>                 nFeature_RNA <span class="sc">&lt;</span> <span class="dv">2500</span> <span class="sc">&amp;</span> percent.mt <span class="sc">&lt;</span> <span class="dv">5</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co"># what was the point of storing meta data?!</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># It's OK, this meta-data is retained</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pbmc<span class="sc">@</span>meta.data, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 orig.ident nCount_RNA nFeature_RNA percent.mt
+AAACATACAACCAC-1     pbmc3k       2419          779  3.0177759
+AAACATTGAGCTAC-1     pbmc3k       4903         1352  3.7935958
+AAACATTGATCAGC-1     pbmc3k       3147         1129  0.8897363
+AAACCGTGCTTCCG-1     pbmc3k       2639          960  1.7430845
+AAACCGTGTATGCG-1     pbmc3k        980          521  1.2244898</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># And we can see clearly the effect of filtering</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(pbmc, <span class="at">feature1 =</span> <span class="st">"nCount_RNA"</span>, <span class="at">feature2 =</span> <span class="st">"percent.mt"</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>plot2 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(pbmc, <span class="at">feature1 =</span> <span class="st">"nCount_RNA"</span>, <span class="at">feature2 =</span> <span class="st">"nFeature_RNA"</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>plot1 <span class="sc">+</span> plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Remember <strong>nFeature_RNA i</strong>s the number of detected genes and the <strong>nCount_RNA</strong> is the total counts per drop (after filtering that should now be per single cell though in the case the one outlier point makes me wonder….seems like ~2000 features is the upper range….).</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
