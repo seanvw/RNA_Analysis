@@ -156,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a>
   <ul class="collapse">
   <li><a href="#libraries" id="toc-libraries" class="nav-link" data-scroll-target="#libraries">Libraries</a></li>
-  <li><a href="#indepenedent-look-at-data-files" id="toc-indepenedent-look-at-data-files" class="nav-link" data-scroll-target="#indepenedent-look-at-data-files">Indepenedent look at data files</a></li>
+  <li><a href="#independent-look-at-data-files" id="toc-independent-look-at-data-files" class="nav-link" data-scroll-target="#independent-look-at-data-files">Independent look at data files</a></li>
   <li><a href="#standard-import" id="toc-standard-import" class="nav-link" data-scroll-target="#standard-import">Standard import</a></li>
   </ul></li>
   <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a>
@@ -165,9 +165,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
   </ul></li>
   <li><a href="#normalization" id="toc-normalization" class="nav-link" data-scroll-target="#normalization">Normalization</a></li>
-  <li><a href="#highly-variable-features" id="toc-highly-variable-features" class="nav-link" data-scroll-target="#highly-variable-features">Highly variable features</a></li>
+  <li><a href="#highly-variable-features" id="toc-highly-variable-features" class="nav-link" data-scroll-target="#highly-variable-features">Highly Variable Features</a></li>
   <li><a href="#data-scaling" id="toc-data-scaling" class="nav-link" data-scroll-target="#data-scaling">Data Scaling</a></li>
-  <li><a href="#dimension-reduction" id="toc-dimension-reduction" class="nav-link" data-scroll-target="#dimension-reduction">Dimension reduction</a>
+  <li><a href="#linear-dimension-reduction" id="toc-linear-dimension-reduction" class="nav-link" data-scroll-target="#linear-dimension-reduction">Linear Dimension Reduction</a>
   <ul class="collapse">
   <li><a href="#run-pca-with-the-scaled-data-values" id="toc-run-pca-with-the-scaled-data-values" class="nav-link" data-scroll-target="#run-pca-with-the-scaled-data-values">Run PCA with the scaled data values</a></li>
   <li><a href="#look-at-the-loadings-matrix-v-and-scoresu" id="toc-look-at-the-loadings-matrix-v-and-scoresu" class="nav-link" data-scroll-target="#look-at-the-loadings-matrix-v-and-scoresu">Look at the loadings matrix (V) and scores(U)</a></li>
@@ -179,8 +179,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-sophisticated-way" id="toc-the-sophisticated-way" class="nav-link" data-scroll-target="#the-sophisticated-way">The sophisticated way</a></li>
   </ul></li>
   <li><a href="#cell-clustering" id="toc-cell-clustering" class="nav-link" data-scroll-target="#cell-clustering">Cell Clustering</a></li>
-  <li><a href="#non-linear-dimensional-reduction" id="toc-non-linear-dimensional-reduction" class="nav-link" data-scroll-target="#non-linear-dimensional-reduction">Non-linear dimensional reduction</a></li>
-  <li><a href="#differentially-expressed-features-cluster-biomarkers" id="toc-differentially-expressed-features-cluster-biomarkers" class="nav-link" data-scroll-target="#differentially-expressed-features-cluster-biomarkers">Differentially expressed features (cluster biomarkers)</a></li>
+  <li><a href="#non-linear-dimensional-reduction" id="toc-non-linear-dimensional-reduction" class="nav-link" data-scroll-target="#non-linear-dimensional-reduction">Non-Linear Dimensional Reduction</a></li>
+  <li><a href="#check-point-the-object" id="toc-check-point-the-object" class="nav-link" data-scroll-target="#check-point-the-object">Check-Point The Object</a></li>
+  <li><a href="#cluster-biomarkers" id="toc-cluster-biomarkers" class="nav-link" data-scroll-target="#cluster-biomarkers">Cluster Biomarkers</a></li>
+  <li><a href="#cell-type-identity-to-clusters" id="toc-cell-type-identity-to-clusters" class="nav-link" data-scroll-target="#cell-type-identity-to-clusters">Cell Type Identity To Clusters</a></li>
+  <li><a href="#sys-admin" id="toc-sys-admin" class="nav-link" data-scroll-target="#sys-admin">Sys Admin</a></li>
   </ul>
 </nav>
     </div>
@@ -206,8 +209,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>A version of the <a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial" title="pbmc3k tutorial">pbmc3k tutorial</a> form the Satija Lab, together with my own notes, code changes and extensions. The tutorial was re-coded in Quarto, ran on a laptop and published to my github. The focus is on software and data understanding whilst producing the same results. In following example(s), I plan to adjust some parameters to look at the stability of the result with respect to these.</p>
 <ul>
-<li><p>Study <a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial" title="pbmc3k">pbmc3k</a></p>
+<li><p>Study pbmc3k</p>
 <ul>
 <li><p>Peripheral Blood Mononuclear Cells (PBMC)</p></li>
 <li><p>10X Genomics</p></li>
@@ -284,8 +288,8 @@ compatibility mode</code></pre>
 </div>
 </div>
 </section>
-<section id="indepenedent-look-at-data-files" class="level3">
-<h3 class="anchored" data-anchor-id="indepenedent-look-at-data-files">Indepenedent look at data files</h3>
+<section id="independent-look-at-data-files" class="level3">
+<h3 class="anchored" data-anchor-id="independent-look-at-data-files">Independent look at data files</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># indepenedant look at files to be grounded..</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># TSVs</span></span>
@@ -570,7 +574,7 @@ UBE2J2                      .         .                .       </code></pre>
 </div>
 </section>
 <section id="highly-variable-features" class="level2">
-<h2 class="anchored" data-anchor-id="highly-variable-features">Highly variable features</h2>
+<h2 class="anchored" data-anchor-id="highly-variable-features">Highly Variable Features</h2>
 <blockquote class="blockquote">
 <p>We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). We and <a href="https://www.nature.com/articles/nmeth.2645">others</a> have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.</p>
 <p>Our procedure in Seurat is described in detail <a href="https://doi.org/10.1016/j.cell.2019.05.031">here</a>, and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the <a href="https://satijalab.org/seurat/reference/findvariablefeatures"><code>FindVariableFeatures()</code></a> function. By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.</p>
@@ -646,8 +650,8 @@ UBE2J2                      .         .                .       </code></pre>
 <p>However, particularly for advanced users who would like to use this functionality, we strongly recommend the use of our new normalization workflow, <a href="https://satijalab.org/seurat/reference/sctransform"><code>SCTransform()</code></a>. The method is described in our <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1874-1">paper</a>, with a separate vignette using Seurat v3 <a href="https://satijalab.org/seurat/articles/sctransform_vignette">here</a>. As with <a href="https://satijalab.org/seurat/reference/scaledata"><code>ScaleData()</code></a>, the function <a href="https://satijalab.org/seurat/reference/sctransform"><code>SCTransform()</code></a> also includes a <code>vars.to.regress</code> parameter.</p>
 </blockquote>
 </section>
-<section id="dimension-reduction" class="level2">
-<h2 class="anchored" data-anchor-id="dimension-reduction">Dimension reduction</h2>
+<section id="linear-dimension-reduction" class="level2">
+<h2 class="anchored" data-anchor-id="linear-dimension-reduction">Linear Dimension Reduction</h2>
 <section id="run-pca-with-the-scaled-data-values" class="level3">
 <h3 class="anchored" data-anchor-id="run-pca-with-the-scaled-data-values">Run PCA with the scaled data values</h3>
 <ul>
@@ -883,7 +887,7 @@ Active assay: RNA (13714 features, 2000 variable features)
 </div>
 </section>
 <section id="non-linear-dimensional-reduction" class="level2">
-<h2 class="anchored" data-anchor-id="non-linear-dimensional-reduction">Non-linear dimensional reduction</h2>
+<h2 class="anchored" data-anchor-id="non-linear-dimensional-reduction">Non-Linear Dimensional Reduction</h2>
 <p>Blockquote:</p>
 <blockquote class="blockquote">
 <p>Seurat offers several non-linear dimensional reduction techniques, such as tSNE and UMAP, to visualize and explore these datasets. The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space. Cells within the graph-based clusters determined above should co-localize on these dimension reduction plots. As input to the UMAP and tSNE, we suggest using the same PCs as input to the clustering analysis.</p>
@@ -897,16 +901,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:00:04 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>13:39:34 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:00:04 Read 2638 rows and found 10 numeric columns</code></pre>
+<pre><code>13:39:34 Read 2638 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:00:04 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>13:39:34 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:00:04 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>13:39:34 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -916,13 +920,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-17:00:04 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpJNIpAM/file79aa3251604c
-17:00:04 Searching Annoy index using 1 thread, search_k = 3000
-17:00:06 Annoy recall = 100%
-17:00:06 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-17:00:07 Initializing from normalized Laplacian + noise (using irlba)
-17:00:07 Commencing optimization for 500 epochs, with 105140 positive edges
-17:00:14 Optimization finished</code></pre>
+13:39:35 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//Rtmpi2vxo8/file940b464af237
+13:39:35 Searching Annoy index using 1 thread, search_k = 3000
+13:39:36 Annoy recall = 100%
+13:39:36 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+13:39:36 Initializing from normalized Laplacian + noise (using irlba)
+13:39:36 Commencing optimization for 500 epochs, with 105140 positive edges
+13:39:41 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -936,16 +940,266 @@ This message will be shown once per session</code></pre>
 </div>
 </div>
 </section>
-<section id="differentially-expressed-features-cluster-biomarkers" class="level2">
-<h2 class="anchored" data-anchor-id="differentially-expressed-features-cluster-biomarkers">Differentially expressed features (cluster biomarkers)</h2>
+<section id="check-point-the-object" class="level2">
+<h2 class="anchored" data-anchor-id="check-point-the-object">Check-Point The Object</h2>
+<p>Note that the pmbc can be saved and reloaded with the R base package function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Useful for code development.</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the object at a point and reload it into the R console </span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="co"># e.g. for developing alternative reports in the next section </span></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="co"># without having to run the pipeline right from the start</span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a><span class="co"># which can be slow</span></span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>saveRDS_overwrite <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(file_path)) {</span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(file_path)</span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"./seurat_object_checkpoints/pbmc_sw1.rds"</span></span>
+<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span>
+<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: Files produced by saveRDS (or serialize to a file connection) </span></span>
+<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a><span class="co"># are not suitable as an interchange format between machines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code># restore the object from disk
+pbmc &lt;- readRDS(file_path)</code></pre>
+</section>
+<section id="cluster-biomarkers" class="level2">
+<h2 class="anchored" data-anchor-id="cluster-biomarkers">Cluster Biomarkers</h2>
+<p>Differentially expressed genes between a given cluster and the cell population as a whole or as an alternative, select specific clusters</p>
 <p>Blockquote:</p>
 <blockquote class="blockquote">
 <p>Seurat can help you find markers that define clusters via differential expression. By default, it identifies positive and negative markers of a single cluster (specified in <code>ident.1</code>), compared to all other cells. <a href="https://satijalab.org/seurat/reference/findallmarkers"><code>FindAllMarkers()</code></a> automates this process for all clusters, but you can also test groups of clusters vs.&nbsp;each other, or against all cells.</p>
 <p>The <code>min.pct</code> argument requires a feature to be detected at a minimum percentage in either of the two groups of cells, and the thresh.test argument requires a feature to be differentially expressed (on average) by some amount between the two groups. You can set both of these to 0, but with a dramatic increase in time - since this will test a large number of features that are unlikely to be highly discriminatory. As another option to speed up these computations, <code>max.cells.per.ident</code> can be set. This will downsample each identity class to have no more cells than whatever this is set to. While there is generally going to be a loss in power, the speed increases can be significant and the most highly differentially expressed features will likely still rise to the top.</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># to be continued </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find all markers of cluster 2</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>cluster2.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(pbmc, <span class="at">ident.1 =</span> <span class="dv">2</span>, <span class="at">min.pct =</span> <span class="fl">0.25</span>)</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cluster2.markers, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            p_val avg_log2FC pct.1 pct.2    p_val_adj
+IL32 2.892340e-90  1.2013522 0.947 0.465 3.966555e-86
+LTB  1.060121e-86  1.2695776 0.981 0.643 1.453850e-82
+CD3D 8.794641e-71  0.9389621 0.922 0.432 1.206097e-66
+IL7R 3.516098e-68  1.1873213 0.750 0.326 4.821977e-64
+LDHB 1.642480e-67  0.8969774 0.954 0.614 2.252497e-63</code></pre>
 </div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find all markers distinguishing cluster 5 from clusters 0 and 3</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>cluster5.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(pbmc, <span class="at">ident.1 =</span> <span class="dv">5</span>, </span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">ident.2 =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>), <span class="at">min.pct =</span> <span class="fl">0.25</span>)</span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cluster5.markers, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      p_val avg_log2FC pct.1 pct.2     p_val_adj
+FCGR3A        8.246578e-205   4.261495 0.975 0.040 1.130936e-200
+IFITM3        1.677613e-195   3.879339 0.975 0.049 2.300678e-191
+CFD           2.401156e-193   3.405492 0.938 0.038 3.292945e-189
+CD68          2.900384e-191   3.020484 0.926 0.035 3.977587e-187
+RP11-290F20.3 2.513244e-186   2.720057 0.840 0.017 3.446663e-182</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find markers for every cluster compared to all remaining cells, </span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="co"># report only the positive ones</span></span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>pbmc.markers <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(pbmc, <span class="at">only.pos =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">min.pct =</span> <span class="fl">0.25</span>, <span class="at">logfc.threshold =</span> <span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 5</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 6</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Calculating cluster 8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>pbmc.markers <span class="sc">%&gt;%</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_max</span>(<span class="at">n =</span> <span class="dv">2</span>, <span class="at">order_by =</span> avg_log2FC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 18 × 7
+# Groups:   cluster [9]
+       p_val avg_log2FC pct.1 pct.2 p_val_adj cluster gene    
+       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;   &lt;chr&gt;   
+ 1 9.57e- 88       1.36 0.447 0.108 1.31e- 83 0       CCR7    
+ 2 3.75e-112       1.09 0.912 0.592 5.14e-108 0       LDHB    
+ 3 0               5.57 0.996 0.215 0         1       S100A9  
+ 4 0               5.48 0.975 0.121 0         1       S100A8  
+ 5 1.06e- 86       1.27 0.981 0.643 1.45e- 82 2       LTB     
+ 6 2.97e- 58       1.23 0.42  0.111 4.07e- 54 2       AQP3    
+ 7 0               4.31 0.936 0.041 0         3       CD79A   
+ 8 9.48e-271       3.59 0.622 0.022 1.30e-266 3       TCL1A   
+ 9 5.61e-202       3.10 0.983 0.234 7.70e-198 4       CCL5    
+10 7.25e-165       3.00 0.577 0.055 9.95e-161 4       GZMK    
+11 3.51e-184       3.31 0.975 0.134 4.82e-180 5       FCGR3A  
+12 2.03e-125       3.09 1     0.315 2.78e-121 5       LST1    
+13 3.13e-191       5.32 0.961 0.131 4.30e-187 6       GNLY    
+14 7.95e-269       4.83 0.961 0.068 1.09e-264 6       GZMB    
+15 1.48e-220       3.87 0.812 0.011 2.03e-216 7       FCER1A  
+16 1.67e- 21       2.87 1     0.513 2.28e- 17 7       HLA-DPB1
+17 1.92e-102       8.59 1     0.024 2.63e- 98 8       PPBP    
+18 9.25e-186       7.29 1     0.011 1.27e-181 8       PF4     </code></pre>
+</div>
+</div>
+<p>Blockquote:</p>
+<blockquote class="blockquote">
+<p>Seurat has several tests for differential expression which can be set with the test.use parameter (see our <a href="https://satijalab.org/seurat/articles/de_vignette">DE vignette</a> for details). For example, the ROC test returns the ‘classification power’ for any individual marker (ranging from 0 - random, to 1 - perfect).</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>cluster0.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(pbmc, <span class="at">ident.1 =</span> <span class="dv">0</span>, </span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">logfc.threshold =</span> <span class="fl">0.25</span>, </span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">test.use =</span> <span class="st">"roc"</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cluster0.markers,<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       myAUC  avg_diff power avg_log2FC pct.1 pct.2
+RPS12  0.827 0.5059247 0.654  0.7298951 1.000 0.991
+RPS6   0.826 0.4762402 0.652  0.6870694 1.000 0.995
+RPS27  0.824 0.5047203 0.648  0.7281575 0.999 0.992
+RPL32  0.821 0.4294911 0.642  0.6196246 0.999 0.995
+RPS14  0.811 0.4334133 0.622  0.6252832 1.000 0.994
+RPS25  0.803 0.5196163 0.606  0.7496479 0.997 0.975
+RPL31  0.798 0.5227603 0.596  0.7541837 0.997 0.964
+RPL9   0.797 0.5230934 0.594  0.7546643 0.997 0.971
+RPL13  0.792 0.3893890 0.584  0.5617696 1.000 0.996
+RPL3   0.788 0.4200060 0.576  0.6059406 0.997 0.995
+RPS3   0.788 0.4104851 0.576  0.5922049 1.000 0.994
+RPS3A  0.787 0.5461948 0.574  0.7879925 0.997 0.975
+RPL30  0.785 0.4606356 0.570  0.6645567 1.000 0.980
+LDHB   0.784 0.7521034 0.568  1.0850559 0.912 0.592
+RPL21  0.783 0.4576652 0.566  0.6602714 0.997 0.991
+RPS15A 0.782 0.4417193 0.564  0.6372663 0.997 0.983
+RPLP2  0.776 0.4113912 0.552  0.5935120 1.000 0.990
+RPS27A 0.770 0.5076242 0.540  0.7323469 0.994 0.967
+RPS13  0.769 0.4814302 0.538  0.6945569 0.985 0.962
+EEF1A1 0.769 0.3662114 0.538  0.5283314 0.994 0.991</code></pre>
+</div>
+</div>
+<p>Blockquote:</p>
+<blockquote class="blockquote">
+<p>We include several tools for visualizing marker expression. <a href="https://satijalab.org/seurat/reference/vlnplot"><code>VlnPlot()</code></a> (shows expression probability distributions across clusters), and <a href="https://satijalab.org/seurat/reference/featureplot"><code>FeaturePlot()</code></a> (visualizes feature expression on a tSNE or PCA plot) are our most commonly used visualizations. We also suggest exploring <a href="https://satijalab.org/seurat/reference/ridgeplot"><code>RidgePlot()</code></a>, <a href="https://satijalab.org/seurat/reference/cellscatter"><code>CellScatter()</code></a>, and <a href="https://satijalab.org/seurat/reference/dotplot"><code>DotPlot()</code></a> as additional methods to view your dataset.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"MS4A1"</span>, <span class="st">"CD79A"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"NKG7"</span>, <span class="st">"PF4"</span>), <span class="at">slot =</span> <span class="st">"counts"</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the 3 x 3 grid did not look clear on my laptop</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co"># try by 2 </span></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"MS4A1"</span>, <span class="st">"GNLY"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"CD3E"</span>, <span class="st">"CD14"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-32-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"FCER1A"</span>, <span class="st">"FCGR3A"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-32-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"LYZ"</span>, <span class="st">"PPBP"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-32-4.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(pbmc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"CD8A"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-32-5.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Blockquote:</p>
+<blockquote class="blockquote">
+<p><a href="https://satijalab.org/seurat/reference/doheatmap"><code>DoHeatmap()</code></a> generates an expression heatmap for given cells and features. In this case, we are plotting the top 20 markers (or all markers if less than 20) for each cluster.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>pbmc.markers <span class="sc">%&gt;%</span></span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">5</span>, <span class="at">wt =</span> avg_log2FC) <span class="ot">-&gt;</span> top_n</span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(top_n,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 7
+# Groups:   cluster [2]
+       p_val avg_log2FC pct.1 pct.2 p_val_adj cluster gene     
+       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;fct&gt;   &lt;chr&gt;    
+ 1 3.75e-112      1.09  0.912 0.592 5.14e-108 0       LDHB     
+ 2 9.57e- 88      1.36  0.447 0.108 1.31e- 83 0       CCR7     
+ 3 1.35e- 51      1.08  0.342 0.103 1.86e- 47 0       LEF1     
+ 4 2.81e- 44      0.951 0.443 0.185 3.85e- 40 0       PIK3IP1  
+ 5 6.27e- 43      1.02  0.33  0.112 8.60e- 39 0       PRKCQ-AS1
+ 6 0              5.57  0.996 0.215 0         1       S100A9   
+ 7 0              5.48  0.975 0.121 0         1       S100A8   
+ 8 0              3.81  0.909 0.059 0         1       LGALS2   
+ 9 0              3.40  0.952 0.15  0         1       FCN1     
+10 3.89e-268      4.55  1     0.516 5.34e-264 1       LYZ      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DoHeatmap</span>(pbmc, <span class="at">features =</span> top_n<span class="sc">$</span>gene) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="cell-type-identity-to-clusters" class="level2">
+<h2 class="anchored" data-anchor-id="cell-type-identity-to-clusters">Cell Type Identity To Clusters</h2>
+<p>Blockquote:</p>
+<blockquote class="blockquote">
+<p>Fortunately in the case of this data-set, we can use canonical markers to easily match the unbiased clustering to known cell types:</p>
+</blockquote>
+<hr>
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><img src="img/cell_type_markers.png" class="img-fluid figure-img" alt="Known cell type markers" width="282"></p>
+<figcaption class="figure-caption">Known cell type markers</figcaption>
+</figure>
+</div>
+<hr>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>new.cluster.ids <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Naive CD4 T"</span>, <span class="st">"CD14+ Mono"</span>, <span class="st">"Memory CD4 T"</span>, </span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"B"</span>, <span class="st">"CD8 T"</span>, <span class="st">"FCGR3A+ Mono"</span>,</span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"NK"</span>, <span class="st">"DC"</span>, <span class="st">"Platelet"</span>)</span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(new.cluster.ids) <span class="ot">&lt;-</span> <span class="fu">levels</span>(pbmc)</span>
+<span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(pbmc, new.cluster.ids)</span>
+<span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">pt.size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_1_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"./seurat_object_checkpoints/pbmc_sw1_final.rds"</span></span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sys-admin" class="level2">
+<h2 class="anchored" data-anchor-id="sys-admin">Sys Admin</h2>
+<p>reticulate is not setup on laptop - needs to be able to find python</p>
 
 
 </section>
