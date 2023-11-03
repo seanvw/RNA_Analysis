@@ -51,5 +51,8 @@ rsconnect/
 /.quarto/
 
 _site/
-.DS_Store/
+.DS_Store
+seurat_object_checkpoints/
+
+
 
