@@ -183,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#check-point-the-object" id="toc-check-point-the-object" class="nav-link" data-scroll-target="#check-point-the-object">Check-Point The Object</a></li>
   <li><a href="#cluster-biomarkers" id="toc-cluster-biomarkers" class="nav-link" data-scroll-target="#cluster-biomarkers">Cluster Biomarkers</a></li>
   <li><a href="#cell-type-identity-to-clusters" id="toc-cell-type-identity-to-clusters" class="nav-link" data-scroll-target="#cell-type-identity-to-clusters">Cell Type Identity To Clusters</a></li>
-  <li><a href="#sys-admin" id="toc-sys-admin" class="nav-link" data-scroll-target="#sys-admin">Sys Admin</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
   </ul>
 </nav>
     </div>
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>A version of the <a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial" title="pbmc3k tutorial">pbmc3k tutorial</a> form the Satija Lab, together with my own notes, code changes and extensions. The tutorial was re-coded in Quarto, ran on a laptop and published to my github. The focus is on software and data understanding whilst producing the same results. In following example(s), I plan to adjust some parameters to look at the stability of the result with respect to these.</p>
+<p>A version of the <a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial" title="pbmc3k tutorial">pbmc3k tutorial</a> form the Satija Lab, together with my own notes, code changes and extensions. The tutorial was re-coded in RStudio as Quarto project, ran on a laptop and published to my github. The focus is on software and data understanding whilst producing the same results. In following example(s), I plan to adjust some parameters to look at the stability of the result with respect to these.</p>
 <ul>
 <li><p>Study pbmc3k</p>
 <ul>
@@ -901,16 +901,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:39:34 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>16:22:00 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:39:34 Read 2638 rows and found 10 numeric columns</code></pre>
+<pre><code>16:22:00 Read 2638 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:39:34 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>16:22:00 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:39:34 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>16:22:00 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -920,13 +920,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-13:39:35 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//Rtmpi2vxo8/file940b464af237
-13:39:35 Searching Annoy index using 1 thread, search_k = 3000
-13:39:36 Annoy recall = 100%
-13:39:36 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-13:39:36 Initializing from normalized Laplacian + noise (using irlba)
-13:39:36 Commencing optimization for 500 epochs, with 105140 positive edges
-13:39:41 Optimization finished</code></pre>
+16:22:00 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpbzW20v/filead933ec163bb
+16:22:00 Searching Annoy index using 1 thread, search_k = 3000
+16:22:01 Annoy recall = 100%
+16:22:01 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+16:22:02 Initializing from normalized Laplacian + noise (using irlba)
+16:22:02 Commencing optimization for 500 epochs, with 105140 positive edges
+16:22:07 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1140,11 +1140,14 @@ EEF1A1 0.769 0.3662114 0.538  0.5283314 0.994 0.991</code></pre>
 <p><a href="https://satijalab.org/seurat/reference/doheatmap"><code>DoHeatmap()</code></a> generates an expression heatmap for given cells and features. In this case, we are plotting the top 20 markers (or all markers if less than 20) for each cluster.</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>pbmc.markers <span class="sc">%&gt;%</span></span>
-<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
-<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">5</span>, <span class="at">wt =</span> avg_log2FC) <span class="ot">-&gt;</span> top_n</span>
-<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(top_n,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the default was 10 </span></span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the heatmap is hard to read with so many markers</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="co"># would need to produce a larger version with high label resolution </span></span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>pbmc.markers <span class="sc">%&gt;%</span></span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">5</span>, <span class="at">wt =</span> avg_log2FC) <span class="ot">-&gt;</span> top_n</span>
+<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(top_n,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 7
 # Groups:   cluster [2]
@@ -1197,9 +1200,8 @@ EEF1A1 0.769 0.3662114 0.538  0.5283314 0.994 0.991</code></pre>
 <span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="sys-admin" class="level2">
-<h2 class="anchored" data-anchor-id="sys-admin">Sys Admin</h2>
-<p>reticulate is not setup on laptop - needs to be able to find python</p>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1"></h2>
 
 
 </section>
