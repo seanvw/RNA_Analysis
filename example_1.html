@@ -272,7 +272,12 @@ for R may have changed</code></pre>
 validation routines, and ensuring assays work in strict v3/v4
 compatibility mode</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a constant by convention to identify this example</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># To be used as part of filenames when saving objects</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Example Number</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>EGN <span class="ot">&lt;-</span> <span class="st">'_Eg1'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data downloaded into git repo </span></span>
@@ -901,16 +906,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:03:26 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>14:08:41 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:03:26 Read 2638 rows and found 10 numeric columns</code></pre>
+<pre><code>14:08:41 Read 2638 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:03:26 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>14:08:41 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:03:26 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>14:08:41 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -920,13 +925,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-19:03:26 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpeJg0Ln/fileb3362d5ae1d1
-19:03:26 Searching Annoy index using 1 thread, search_k = 3000
-19:03:27 Annoy recall = 100%
-19:03:27 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-19:03:27 Initializing from normalized Laplacian + noise (using irlba)
-19:03:27 Commencing optimization for 500 epochs, with 105140 positive edges
-19:03:31 Optimization finished</code></pre>
+14:08:41 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpU758Ng/filee31b16b6faa9
+14:08:41 Searching Annoy index using 1 thread, search_k = 3000
+14:08:42 Annoy recall = 100%
+14:08:43 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+14:08:43 Initializing from normalized Laplacian + noise (using irlba)
+14:08:43 Commencing optimization for 500 epochs, with 105140 positive edges
+14:08:48 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -957,7 +962,7 @@ This message will be shown once per session</code></pre>
 <span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
 <span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"./seurat_object_checkpoints/pbmc_sw1.rds"</span></span>
+<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"./seurat_object_checkpoints/pbmc_sw1"</span>,EGN,<span class="st">".rds"</span>)</span>
 <span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span>
 <span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: Files produced by saveRDS (or serialize to a file connection) </span></span>
@@ -1196,8 +1201,9 @@ EEF1A1 0.769 0.3662114 0.538  0.5283314 0.994 0.991</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"./seurat_object_checkpoints/pbmc_sw1_final.rds"</span></span>
-<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"./seurat_object_checkpoints/pbmc_sw1"</span>,EGN,<span class="st">"_final.rds"</span>)</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Done. See yah :)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="section-1" class="level2">
