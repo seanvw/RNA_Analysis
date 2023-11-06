@@ -4,7 +4,7 @@ title: "Example #1"
 
 ## Overview
 
-A version of the [pbmc3k tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial "pbmc3k tutorial") form the Satija Lab, together with my own notes, code changes and extensions. The tutorial was re-coded in Quarto, ran on a laptop and published to my github. The focus is on software and data understanding whilst producing the same results. In following example(s), I plan to adjust some parameters to look at the stability of the result with respect to these.
+A version of the [pbmc3k tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial "pbmc3k tutorial") from the Satija Lab, together with my own notes, code changes and extensions. The tutorial was re-coded in RStudio as Quarto project, ran on a laptop and published to my github. The focus is on software and data understanding whilst producing the same results. In following example(s), I plan to adjust some parameters to look at the stability of the result with respect to these.
 
 -   Study pbmc3k
 
@@ -39,6 +39,11 @@ A version of the [pbmc3k tutorial](https://satijalab.org/seurat/articles/pbmc3k_
 library(dplyr)
 library(Seurat)
 library(patchwork)
+
+# Define a constant by convention to identify this example
+# To be used as part of filenames when saving objects
+# Example Number
+EGN <- '_Eg1'
 ```
 
 ```{r}
@@ -491,7 +496,7 @@ saveRDS_overwrite <- function(file_path) {
   saveRDS(pbmc, file = file_path)
 }
 
-file_path <- "./seurat_object_checkpoints/pbmc_sw1.rds"
+file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,".rds")
 saveRDS_overwrite(file_path)
 
 # NB: Files produced by saveRDS (or serialize to a file connection) 
@@ -616,8 +621,9 @@ DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
 ```
 
 ```{r}
-file_path <- "./seurat_object_checkpoints/pbmc_sw1_final.rds"
+file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,"_final.rds")
 saveRDS_overwrite(file_path)
+# Done. See yah :)
 ```
 
 ## 
