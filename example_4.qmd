@@ -1,0 +1,228 @@
+---
+title: "Example 4"
+---
+
+## Overview
+
+A stripped down version of Example #1, modified to allow key parameters to be 
+easily changed in order to look at the stability of the final results.
+
+Tests and results:
+
+-   Like Example #1, nFeature_RNA is cut at 2500
+
+-   FindClusters resolution is reset to the Example #1 default of 0.5
+
+-   The number of Principal Components (PCs) used in clustering is generated
+    as a series: 2, 3, 5, 7 and is compared to 10
+    
+-   A nice demonstration of choosing a sufficient number of PCs
+
+## Process
+
+```{r}
+library(dplyr)
+library(Seurat)
+library(patchwork)
+
+# Verbose comments in Example #1 
+EGN <- '_Eg4'
+```
+
+```{r}
+# read & create object
+data_dir <- "./filtered_gene_bc_matrices/hg19/"
+pbmc.data <- Read10X(data.dir = data_dir)
+pbmc <- CreateSeuratObject(counts = pbmc.data, 
+                           project = "pbmc3k", 
+                           min.cells = 3, 
+                           min.features = 200)
+# calculate %mitochondrial
+pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
+# Visualize QC metrics as a violin plot
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),
+        ncol = 3)
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+# apply filters and overwrite the object
+# 
+nFeature_RNA_Max <- 2500
+# nFeature_RNA_Max <- 3000
+# nFeature_RNA_Max <- 2100
+# i.e. not cut
+# nFeature_RNA_Max <- 4000
+
+pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & 
+                 nFeature_RNA < nFeature_RNA_Max & percent.mt < 5)
+# And we can see clearly the effect of filtering
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+# normalise 
+pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", 
+                      scale.factor = 10000)
+# variable freatures (genes)
+pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+n_top <- 15
+top_v_genes <- head(VariableFeatures(pbmc), n_top)
+top_v_genes
+
+# plot variable features with and without labels
+plot1 <- VariableFeaturePlot(pbmc)
+plot2 <- LabelPoints(plot = plot1, points = top_v_genes, repel = TRUE)
+plot2 
+
+# scale all 
+all.genes <- rownames(pbmc)
+pbmc <- ScaleData(pbmc, features = all.genes)
+
+# linear dim reduction
+pbmc <- RunPCA(pbmc, verbose = FALSE)
+n_features <- 8
+print(pbmc[["pca"]], dims = 1:4, nfeatures = n_features)
+# V
+n_mulitplier = 3
+VizDimLoadings(pbmc, dims = 1:2, 
+               reduction = "pca", 
+               nfeatures = n_features * n_mulitplier)
+VizDimLoadings(pbmc, dims = 3:4, 
+               reduction = "pca", 
+               nfeatures = n_features * n_mulitplier)
+# U 
+# Dimplot has lots of options
+DimPlot(pbmc, reduction = "pca",  dims = c(1, 2))
+DimPlot(pbmc, reduction = "pca",  dims = c(2, 3))
+# as in quote above, 
+# ordererd cells and genes according to PCA scores 
+
+# heatmaps 
+n_cells <- 300
+n_genes <- 24
+# 1
+DimHeatmap(pbmc, dims = 1, cells = n_cells, nfeatures = n_genes, balanced = TRUE)
+# many
+n_PC <- 6
+plots <- DimHeatmap(pbmc, dims = 1:n_PC, cells = n_cells, 
+             nfeatures = n_genes, balanced = TRUE)
+
+# elbow plot
+ElbowPlot(pbmc)
+#n_pcs_chosen <- 10
+# n_pcs_chosen <- 2
+#n_pcs_chosen <- 3
+#n_pcs_chosen <- 5
+n_pcs_chosen <- 7
+
+# clusters
+# create the K-nearest neighbor (KNN) graph of cells
+pbmc <- FindNeighbors(pbmc, dims = 1:n_pcs_chosen)
+# define clusters according to resolution
+pbmc <- FindClusters(pbmc, resolution = 0.5)
+#pbmc <- FindClusters(pbmc, resolution = 1.0)
+#pbmc <- FindClusters(pbmc, resolution = 0.2)
+
+# Look at cluster IDs of the first 5 cells
+# In this case we have 9 levels (0 - 8)
+# The structure is the relation between cell barcode and the cluster (community) 
+head(Idents(pbmc), 5)
+# Each cell that survived filtering above is represented 
+length(Idents(pbmc))
+pbmc
+
+# UMAP
+pbmc <- RunUMAP(pbmc, dims = 1:n_pcs_chosen)
+DimPlot(pbmc, reduction = "umap")
+
+# tSNE
+pbmc <- RunTSNE(pbmc, dims = 1:n_pcs_chosen)
+DimPlot(pbmc, reduction = "tsne")
+
+# check-point
+saveRDS_overwrite <- function(file_path) {
+  if (file.exists(file_path)) {
+    file.remove(file_path)
+  } 
+  saveRDS(pbmc, file = file_path)
+}
+
+file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,".rds")
+saveRDS_overwrite(file_path)
+# to restore
+# pbmc <- readRDS(file_path)
+
+# find markers for every cluster compared to all remaining cells, 
+# report only the positive ones
+pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE, 
+                                 min.pct = 0.25, logfc.threshold = 0.25)
+
+# heatmaps 
+# note that 'wt' specifies the variable to use for ordering 
+# we get the best markers in terms of size effect
+pbmc.markers %>%
+    group_by(cluster) %>%
+    top_n(n = 5, wt = avg_log2FC) -> top_n
+
+head(top_n,10)
+
+# heat map shows that cluster 1 and 2 are not easily distiguished
+# by just a few genes others are 
+DoHeatmap(pbmc, features = top_n$gene)
+# + NoLegend()
+
+# consider the canonical cluster 0 markers
+# "IL7R" is not particularly good marker for cluster 0 
+VlnPlot(pbmc, features = c("IL7R", "CCR7"))
+FeaturePlot(pbmc, features = c("IL7R", "CCR7"))
+
+# Try the top 5
+# Seems like there are some better markers than IL7R e.g.s LEF1 and PRKCQ-AS1
+VlnPlot(pbmc, features = c("LDHB", "CCR7","LEF1","PRKCQ-AS1","LDLRAP1"))
+FeaturePlot(pbmc, features = c("LDHB", "CCR7","LEF1","PRKCQ-AS1","LDLRAP1"))
+
+```
+
+## Compare results
+
+-   With reference to Example #1 we are just changing the number of PCs used in clustering, tSNE and UMAP
+-   Using \< 10 PCs doesn't make sense obviously (with reference to the ElbowPlot of variance by PC number) but running a series of increasing n PCs is interesting
+-   Here is what happens when 2 instead of 10 PCs are used:
+
+![2 Principal Components](img/unlabelled_umap_12_clusters_from_2_PCs.png){fig-alt="2 Principal Components"}
+
+-   ...and when 3 instead of 10 PCs are used:
+
+[![3 Principal Components](img/unlabelled_umap_8_clusters_from_3_PCs.png){fig-alt="3 Principal Components" width="840"}](3%20Principal%20Components)
+
+-   ...and when 5 instead of 10 PCs are used:
+
+![5 Principal Components](img/unlabelled_umap_9_clusters_from_5_PCs.png){fig-alt="5 Principal Components" width="840"}
+
+-   ...and when 7 (n_pcs_chosen should be set to 7, see below) instead of 10 PCs are used:
+
+```{r}
+# just to be sure, echo this number
+n_pcs_chosen
+# the unlabelled clusters
+DimPlot(pbmc, reduction = "umap")
+```
+
+-   Compare with 10 below...
+
+------------------------------------------------------------------------
+
+![The default labelled UMAP clusters for comparison from Example #1 used 10 PCs](img/labelled_umap_clusters_default.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1 used 10 PCs" width="840"}
+
+![The default unlabelled UMAP clusters for comparison from Example #1 used 10 PCs](img/unlabelled_umap_clusters.png){fig-alt="The default unlabelled UMAP clusters for comparison from Example #1 used 10 PCs" width="840"}
+
+------------------------------------------------------------------------
+
+```{r}
+# save final 
+file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",
+                    EGN,"_final.rds")
+saveRDS_overwrite(file_path)
+# Done. See yah :)
+
+
+```
