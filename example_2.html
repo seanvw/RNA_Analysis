@@ -179,21 +179,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>A stripped down version of Example #1, modified to allow key parameters to be changed in order to look at the stability of the final results.</p>
+<p>A stripped down version of Example #1, modified to allow key parameters to be easily changed in order to look at the stability of the final results.</p>
+<p>Tests:</p>
 <ul>
 <li><p>nFeature_RNA is cut at 2100 rather than the default of 2500 which seems to include one outlier at ca. 2400</p>
 <ul>
-<li>quite similar, 9 communities, UMAP just a little different</li>
+<li>Quite similar, 9 communities, UMAP just a little different but the same messages from data</li>
 </ul></li>
 <li><p>nFeature_RNA is cut at 3000</p>
 <ul>
-<li>quite similar</li>
+<li>Quite similar, 9 communities, UMAP just a little different</li>
 </ul></li>
 <li><p>nFeature_RNA is cut at 4000 (not cut)</p>
 <ul>
-<li><p>now interesting, the label order is not appropriate and needs to be changed</p></li>
-<li><p>9 communities are generated but the order is different and so labels readjusted</p></li>
-<li><p>NK cluster is extended</p></li>
+<li><p>Now interesting</p></li>
+<li><p>9 communities are generated but the cluster integer order is different and so labels need to be readjusted</p></li>
+<li><p>Cells NK cluster is extended</p></li>
+<li><p>Seems like there are some better gene expression markers than IL7R e.g.s LEF1 and PRKCQ-AS1</p></li>
 </ul></li>
 </ul>
 </section>
@@ -430,16 +432,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:56:43 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>09:22:41 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:56:43 Read 2643 rows and found 10 numeric columns</code></pre>
+<pre><code>09:22:41 Read 2643 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:56:43 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>09:22:41 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:56:43 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>09:22:41 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -449,13 +451,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-17:56:43 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpAjTCqY/filef2b531a2b938
-17:56:43 Searching Annoy index using 1 thread, search_k = 3000
-17:56:44 Annoy recall = 100%
-17:56:45 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-17:56:45 Initializing from normalized Laplacian + noise (using irlba)
-17:56:45 Commencing optimization for 500 epochs, with 105742 positive edges
-17:56:51 Optimization finished</code></pre>
+09:22:41 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpLpZTYg/file100baffe5a4f
+09:22:41 Searching Annoy index using 1 thread, search_k = 3000
+09:22:42 Annoy recall = 100%
+09:22:42 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+09:22:43 Initializing from normalized Laplacian + noise (using irlba)
+09:22:43 Commencing optimization for 500 epochs, with 105742 positive edges
+09:22:47 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -557,19 +559,30 @@ Calculating cluster 8</code></pre>
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                     "B", "CD8 T", "FCGR3A+ Mono",</span></span>
 <span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "NK", "DC", "Platelet")</span></span>
 <span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="co"># label adjust </span></span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>new.cluster.ids <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Naive CD4 T"</span>, <span class="st">"Memory CD4 T"</span>, <span class="st">"CD14+ Mono"</span>,</span>
-<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"B"</span>, <span class="st">"CD8 T"</span>, <span class="st">"FCGR3A+ Mono"</span>,</span>
-<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"NK"</span>, <span class="st">"DC"</span>, <span class="st">"Platelet"</span>)</span>
-<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(new.cluster.ids) <span class="ot">&lt;-</span> <span class="fu">levels</span>(pbmc)</span>
-<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(pbmc, new.cluster.ids)</span>
-<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">pt.size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="co"># the unlabelled clusters</span></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="example_2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># label adjust </span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>new.cluster.ids <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Naive CD4 T"</span>, <span class="st">"Memory CD4 T"</span>, <span class="st">"CD14+ Mono"</span>,</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"B"</span>, <span class="st">"CD8 T"</span>, <span class="st">"FCGR3A+ Mono"</span>,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"NK"</span>, <span class="st">"DC"</span>, <span class="st">"Platelet"</span>)</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(new.cluster.ids) <span class="ot">&lt;-</span> <span class="fu">levels</span>(pbmc)</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>pbmc <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(pbmc, new.cluster.ids)</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">pt.size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example_2_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <hr>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/unlabelled_umap_clusters.png" class="img-fluid figure-img" alt="The default unlabelled UMAP clusters for comparison from Example #1" width="840"></p>
+<figcaption class="figure-caption">The default unlabelled UMAP clusters for comparison from Example #1</figcaption>
+</figure>
+</div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="img/labelled_umap_clusters_default.png" class="img-fluid figure-img" alt="The default labelled UMAP clusters for comparison from Example #1" width="840"></p>
@@ -577,11 +590,17 @@ Calculating cluster 8</code></pre>
 </figure>
 </div>
 <hr>
+<ul>
+<li><p>TODO</p>
+<ul>
+<li>Look at and compare the tSNE results - tSNEs seem to give nice separation</li>
+</ul></li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save final </span></span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"./seurat_object_checkpoints/pbmc_sw1"</span>,EGN,<span class="st">"_final.rds"</span>)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Done. See yah :)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save final </span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"./seurat_object_checkpoints/pbmc_sw1"</span>,EGN,<span class="st">"_final.rds"</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS_overwrite</span>(file_path)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Done. See yah :)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
