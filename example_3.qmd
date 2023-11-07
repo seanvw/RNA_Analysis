@@ -6,7 +6,7 @@ title: "Example 3"
 
 A stripped down version of Example #1, modified to allow key parameters to be easily changed in order to look at the stability of the final results.
 
-Tests and results:2
+Tests and results:
 
 -   Changing FindClusters resolution to 0.2 (from 0.5) causes a merge of CD14+ Mono Naive and Memory cells. Likewise a merge of CD8 T and NK cells. Other cells populations remain distinct. Overall, a change from 9 to 7 communities.
 -   Like Example #2, nFeature_RNA is cut at 4000 (not cut actually because it includes all data point from the created object). Now we modulate FindClusters resolution. Changing FindClusters resolution to 1.0 (from 0.5) causes a split in the CD4 T/CD8 T region and a split in the CD14+ Mono / FCGR3A+ Mono region to give 11 communities (from the original 9). The high nFeature_RNA extension of the NK cells remains.
