@@ -182,8 +182,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A stripped down version of Example #1, modified to allow key parameters to be easily changed in order to look at the stability of the final results.</p>
 <p>Tests and results:</p>
 <ul>
+<li>Like Example #2, nFeature_RNA is cut at 4000 (not cut actually because it includes all data point from the created object). Now we modulate FindClusters resolution.</li>
 <li>Changing FindClusters resolution to 0.2 (from 0.5) causes a merge of CD14+ Mono Naive and Memory cells. Likewise a merge of CD8 T and NK cells. Other cells populations remain distinct. Overall, a change from 9 to 7 communities.</li>
-<li>Like Example #2, nFeature_RNA is cut at 4000 (not cut actually because it includes all data point from the created object). Now we modulate FindClusters resolution. Changing FindClusters resolution to 1.0 (from 0.5) causes a split in the CD4 T/CD8 T region and a split in the CD14+ Mono / FCGR3A+ Mono region to give 11 communities (from the original 9). The high nFeature_RNA extension of the NK cells remains.</li>
+<li>Changing FindClusters resolution to 1.0 (from 0.5) causes a split in the CD4 T/CD8 T region and a split in the CD14+ Mono / FCGR3A+ Mono region to give 11 communities (from the original 9). The high nFeature_RNA extension of the NK cells remains.</li>
 </ul>
 </section>
 <section id="process" class="level2">
@@ -422,16 +423,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:32:19 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>09:42:49 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:32:19 Read 2643 rows and found 10 numeric columns</code></pre>
+<pre><code>09:42:49 Read 2643 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:32:19 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>09:42:49 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:32:19 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>09:42:49 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -441,13 +442,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-09:32:19 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpgKvdEs/file104692c71b856
-09:32:19 Searching Annoy index using 1 thread, search_k = 3000
-09:32:20 Annoy recall = 100%
-09:32:20 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-09:32:20 Initializing from normalized Laplacian + noise (using irlba)
-09:32:20 Commencing optimization for 500 epochs, with 105742 positive edges
-09:32:24 Optimization finished</code></pre>
+09:42:49 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//Rtmp4pRnmY/file106d540fcc750
+09:42:49 Searching Annoy index using 1 thread, search_k = 3000
+09:42:50 Annoy recall = 100%
+09:42:50 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+09:42:51 Initializing from normalized Laplacian + noise (using irlba)
+09:42:51 Commencing optimization for 500 epochs, with 105742 positive edges
+09:42:55 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
