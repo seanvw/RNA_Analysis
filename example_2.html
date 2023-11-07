@@ -432,16 +432,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:22:41 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>09:30:27 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:22:41 Read 2643 rows and found 10 numeric columns</code></pre>
+<pre><code>09:30:27 Read 2643 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:22:41 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>09:30:27 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:22:41 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>09:30:27 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -451,13 +451,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-09:22:41 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpLpZTYg/file100baffe5a4f
-09:22:41 Searching Annoy index using 1 thread, search_k = 3000
-09:22:42 Annoy recall = 100%
-09:22:42 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-09:22:43 Initializing from normalized Laplacian + noise (using irlba)
-09:22:43 Commencing optimization for 500 epochs, with 105742 positive edges
-09:22:47 Optimization finished</code></pre>
+09:30:27 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//Rtmp8AV1Qx/file103414324597b
+09:30:27 Searching Annoy index using 1 thread, search_k = 3000
+09:30:28 Annoy recall = 100%
+09:30:28 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+09:30:29 Initializing from normalized Laplacian + noise (using irlba)
+09:30:29 Commencing optimization for 500 epochs, with 105742 positive edges
+09:30:35 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
