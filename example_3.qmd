@@ -1,7 +1,207 @@
 ---
-title: "Example #3"
+title: "Example 3"
 ---
 
-Some examples of non-proprietary analysis.
+## Overview
 
-Work in progress
+A stripped down version of Example #1, modified to allow key parameters to be easily changed in order to look at the stability of the final results.
+
+Tests and results:2
+
+-   Changing FindClusters resolution to 0.2 (from 0.5) causes a merge of CD14+ Mono Naive and Memory cells. Likewise a merge of CD8 T and NK cells. Other cells populations remain distinct. Overall, a change from 9 to 7 communities.
+-   Like Example #2, nFeature_RNA is cut at 4000 (not cut actually because it includes all data point from the created object). Now we modulate FindClusters resolution. Changing FindClusters resolution to 1.0 (from 0.5) causes a split in the CD4 T/CD8 T region and a split in the CD14+ Mono / FCGR3A+ Mono region to give 11 communities (from the original 9). The high nFeature_RNA extension of the NK cells remains.
+
+## Process
+
+```{r}
+library(dplyr)
+library(Seurat)
+library(patchwork)
+
+# Verbose comments in Example #1 
+EGN <- '_Eg3'
+```
+
+```{r}
+# read & create object
+data_dir <- "./filtered_gene_bc_matrices/hg19/"
+pbmc.data <- Read10X(data.dir = data_dir)
+pbmc <- CreateSeuratObject(counts = pbmc.data, 
+                           project = "pbmc3k", 
+                           min.cells = 3, 
+                           min.features = 200)
+# calculate %mitochondrial
+pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
+# Visualize QC metrics as a violin plot
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),
+        ncol = 3)
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+# apply filters and overwrite the object
+# 
+# nFeature_RNA <- 2500
+# nFeature_RNA_Max <- 3000
+# nFeature_RNA_Max <- 2100
+# i.e. not cut
+nFeature_RNA_Max <- 4000
+
+pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & 
+                 nFeature_RNA < nFeature_RNA_Max & percent.mt < 5)
+# And we can see clearly the effect of filtering
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+# normalise 
+pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", 
+                      scale.factor = 10000)
+# variable freatures (genes)
+pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+n_top <- 15
+top_v_genes <- head(VariableFeatures(pbmc), n_top)
+top_v_genes
+
+# plot variable features with and without labels
+plot1 <- VariableFeaturePlot(pbmc)
+plot2 <- LabelPoints(plot = plot1, points = top_v_genes, repel = TRUE)
+plot2 
+
+# scale all 
+all.genes <- rownames(pbmc)
+pbmc <- ScaleData(pbmc, features = all.genes)
+
+# linear dim reduction
+pbmc <- RunPCA(pbmc, verbose = FALSE)
+n_features <- 8
+print(pbmc[["pca"]], dims = 1:4, nfeatures = n_features)
+# V
+n_mulitplier = 3
+VizDimLoadings(pbmc, dims = 1:2, 
+               reduction = "pca", 
+               nfeatures = n_features * n_mulitplier)
+VizDimLoadings(pbmc, dims = 3:4, 
+               reduction = "pca", 
+               nfeatures = n_features * n_mulitplier)
+# U 
+# Dimplot has lots of options
+DimPlot(pbmc, reduction = "pca",  dims = c(1, 2))
+DimPlot(pbmc, reduction = "pca",  dims = c(2, 3))
+# as in quote above, 
+# ordererd cells and genes according to PCA scores 
+
+# heatmaps 
+n_cells <- 300
+n_genes <- 24
+# 1
+DimHeatmap(pbmc, dims = 1, cells = n_cells, nfeatures = n_genes, balanced = TRUE)
+# many
+n_PC <- 6
+plots <- DimHeatmap(pbmc, dims = 1:n_PC, cells = n_cells, 
+             nfeatures = n_genes, balanced = TRUE)
+
+# elbow plot
+ElbowPlot(pbmc)
+n_pcs_chosen <- 10
+
+# clusters
+# create the K-nearest neighbor (KNN) graph of cells
+pbmc <- FindNeighbors(pbmc, dims = 1:n_pcs_chosen)
+# define clusters according to resolution
+#pbmc <- FindClusters(pbmc, resolution = 0.5)
+pbmc <- FindClusters(pbmc, resolution = 1.0)
+#pbmc <- FindClusters(pbmc, resolution = 0.2)
+
+# Look at cluster IDs of the first 5 cells
+# In this case we have 9 levels (0 - 8)
+# The structure is the relation between cell barcode and the cluster (community) 
+head(Idents(pbmc), 5)
+# Each cell that survived filtering above is represented 
+length(Idents(pbmc))
+pbmc
+
+# UMAP
+pbmc <- RunUMAP(pbmc, dims = 1:n_pcs_chosen)
+DimPlot(pbmc, reduction = "umap")
+
+# tSNE
+pbmc <- RunTSNE(pbmc, dims = 1:n_pcs_chosen)
+DimPlot(pbmc, reduction = "tsne")
+
+# check-point
+saveRDS_overwrite <- function(file_path) {
+  if (file.exists(file_path)) {
+    file.remove(file_path)
+  } 
+  saveRDS(pbmc, file = file_path)
+}
+
+file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,".rds")
+saveRDS_overwrite(file_path)
+# to restore
+# pbmc <- readRDS(file_path)
+
+# find markers for every cluster compared to all remaining cells, 
+# report only the positive ones
+pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE, 
+                                 min.pct = 0.25, logfc.threshold = 0.25)
+
+# heatmaps 
+# note that 'wt' specifies the variable to use for ordering 
+# we get the best markers in terms of size effect
+pbmc.markers %>%
+    group_by(cluster) %>%
+    top_n(n = 5, wt = avg_log2FC) -> top_n
+
+head(top_n,10)
+
+# heat map shows that cluster 1 and 2 are not easily distiguished
+# by just a few genes others are 
+DoHeatmap(pbmc, features = top_n$gene)
+# + NoLegend()
+
+# consider the canonical cluster 0 markers
+# "IL7R" is not particularly good marker for cluster 0 
+VlnPlot(pbmc, features = c("IL7R", "CCR7"))
+FeaturePlot(pbmc, features = c("IL7R", "CCR7"))
+
+# Try the top 5
+# Seems like there are some better markers than IL7R e.g.s LEF1 and PRKCQ-AS1
+VlnPlot(pbmc, features = c("LDHB", "CCR7","LEF1","PRKCQ-AS1","LDLRAP1"))
+FeaturePlot(pbmc, features = c("LDHB", "CCR7","LEF1","PRKCQ-AS1","LDLRAP1"))
+
+```
+
+## Compare results
+
+-   Changing FindClusters resolution to 0.2 (from 0.5) causes a merge of CD14+ Mono Naive and Memory cells. Likewise a merge of CD8 T and NK cells. Other cells populations remain distinct. Overall, a change from 9 to 7 communities.
+
+![Cell communities with a FindClusters resolution of 0.2](img/unlabelled_umap_7_clusters.png){fig-alt="Cell communities with a FindClusters resolution of 0.2"}
+
+```{r}
+# the unlabelled clusters
+DimPlot(pbmc, reduction = "umap")
+
+```
+
+-   Changing FindClusters resolution to 1.0 (from 0.5) causes a split in the CD4 T/CD8 T region and a split in the CD14+ Mono / FCGR3A+ Mono region to give 11 communities (from the original 9). The high nFeature_RNA extension of the NK cells remains.
+
+------------------------------------------------------------------------
+
+![The default labelled UMAP clusters for comparison from Example #1](img/labelled_umap_clusters_default.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1" width="840"}
+
+![The default unlabelled UMAP clusters for comparison from Example #1](img/unlabelled_umap_clusters.png){fig-alt="The default unlabelled UMAP clusters for comparison from Example #1" width="840"}
+
+------------------------------------------------------------------------
+
+-   TODO
+
+    -   Look at and compare the tSNE results - tSNEs seem to give nice separation
+
+```{r}
+# save final 
+file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,"_final.rds")
+saveRDS_overwrite(file_path)
+# Done. See yah :)
+
+
+```
