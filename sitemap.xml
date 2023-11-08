@@ -2,26 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://seanvw.github.io/RNA_Analysis/example_3.html</loc>
-    <lastmod>2023-11-08T13:20:38.956Z</lastmod>
+    <lastmod>2023-11-08T17:12:06.472Z</lastmod>
   </url>
   <url>
     <loc>https://seanvw.github.io/RNA_Analysis/example_1.html</loc>
-    <lastmod>2023-11-08T13:17:14.690Z</lastmod>
-  </url>
-  <url>
-    <loc>https://seanvw.github.io/RNA_Analysis/about.html</loc>
-    <lastmod>2023-11-08T13:13:12.119Z</lastmod>
-  </url>
-  <url>
-    <loc>https://seanvw.github.io/RNA_Analysis/index.html</loc>
-    <lastmod>2023-11-08T13:13:11.655Z</lastmod>
+    <lastmod>2023-11-08T17:09:01.214Z</lastmod>
   </url>
   <url>
     <loc>https://seanvw.github.io/RNA_Analysis/example_4.html</loc>
-    <lastmod>2023-11-08T13:14:56.871Z</lastmod>
+    <lastmod>2023-11-08T17:06:51.146Z</lastmod>
+  </url>
+  <url>
+    <loc>https://seanvw.github.io/RNA_Analysis/index.html</loc>
+    <lastmod>2023-11-08T17:05:17.669Z</lastmod>
+  </url>
+  <url>
+    <loc>https://seanvw.github.io/RNA_Analysis/include_utils_1.html</loc>
+    <lastmod>2023-11-08T17:05:17.252Z</lastmod>
+  </url>
+  <url>
+    <loc>https://seanvw.github.io/RNA_Analysis/about.html</loc>
+    <lastmod>2023-11-08T17:05:18.140Z</lastmod>
+  </url>
+  <url>
+    <loc>https://seanvw.github.io/RNA_Analysis/example_5.html</loc>
+    <lastmod>2023-11-08T17:06:57.050Z</lastmod>
   </url>
   <url>
     <loc>https://seanvw.github.io/RNA_Analysis/example_2.html</loc>
-    <lastmod>2023-11-08T13:18:56.802Z</lastmod>
+    <lastmod>2023-11-08T17:10:32.785Z</lastmod>
   </url>
 </urlset>
