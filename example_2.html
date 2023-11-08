@@ -164,9 +164,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#changelog" id="toc-changelog" class="nav-link" data-scroll-target="#changelog">ChangeLog</a>
+  <li><a href="#changelog" id="toc-changelog" class="nav-link" data-scroll-target="#changelog">ChangeLog</a></li>
+  <li><a href="#includes" id="toc-includes" class="nav-link" data-scroll-target="#includes">Includes</a>
   <ul class="collapse">
-  <li><a href="#includes" id="toc-includes" class="nav-link" data-scroll-target="#includes">Includes</a></li>
   <li><a href="#environment-load-and-check" id="toc-environment-load-and-check" class="nav-link" data-scroll-target="#environment-load-and-check">Environment Load and Check</a></li>
   <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
   </ul></li>
@@ -180,7 +180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Include Utils 1</h1>
+<h1 class="title">Example 2</h1>
 </div>
 
 
@@ -223,9 +223,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Updated to Seurat v5</li>
 </ul>
-<section id="includes" class="level3">
-<h3 class="anchored" data-anchor-id="includes">Includes</h3>
 </section>
+<section id="includes" class="level2">
+<h2 class="anchored" data-anchor-id="includes">Includes</h2>
 <section id="environment-load-and-check" class="level3">
 <h3 class="anchored" data-anchor-id="environment-load-and-check">Environment Load and Check</h3>
 <ul>
@@ -540,16 +540,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:09:26 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>18:29:37 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:09:26 Read 2643 rows and found 10 numeric columns</code></pre>
+<pre><code>18:29:37 Read 2643 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:09:26 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>18:29:37 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:09:26 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>18:29:37 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -559,13 +559,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-18:09:27 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpdxvaI3/file152fa77f49df9
-18:09:27 Searching Annoy index using 1 thread, search_k = 3000
-18:09:27 Annoy recall = 100%
-18:09:28 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-18:09:28 Initializing from normalized Laplacian + noise (using RSpectra)
-18:09:28 Commencing optimization for 500 epochs, with 105742 positive edges
-18:09:33 Optimization finished</code></pre>
+18:29:37 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//Rtmpnd5H8G/file156166412e9db
+18:29:37 Searching Annoy index using 1 thread, search_k = 3000
+18:29:38 Annoy recall = 100%
+18:29:39 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+18:29:39 Initializing from normalized Laplacian + noise (using RSpectra)
+18:29:39 Commencing optimization for 500 epochs, with 105742 positive edges
+18:29:44 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
