@@ -1,5 +1,5 @@
 ---
-title: "Example 3"
+title: "Example #3"
 ---
 
 ## Overview
@@ -11,6 +11,14 @@ Tests and results:
 -   Like Example #2, nFeature_RNA is cut at 4000 (not cut actually because it includes all data point from the created object). Now we modulate FindClusters resolution.
 -   Changing FindClusters resolution to 0.2 (from 0.5) causes a merge of CD14+ Mono Naive and Memory cells. Likewise a merge of CD8 T and NK cells. Other cells populations remain distinct. Overall, a change from 9 to 7 communities.
 -   Changing FindClusters resolution to 1.0 (from 0.5) causes a split in the CD4 T/CD8 T region and a split in the CD14+ Mono / FCGR3A+ Mono region to give 11 communities (from the original 9). The high nFeature_RNA extension of the NK cells remains.
+
+## ChangeLog
+
+-   Updated to Seurat v5
+
+### Includes
+
+{{< include include_utils_1.qmd >}}
 
 ## Environment Load and Check
 
@@ -162,14 +170,7 @@ DimPlot(pbmc, reduction = "umap")
 pbmc <- RunTSNE(pbmc, dims = 1:n_pcs_chosen)
 DimPlot(pbmc, reduction = "tsne")
 
-# check-point
-saveRDS_overwrite <- function(file_path) {
-  if (file.exists(file_path)) {
-    file.remove(file_path)
-  } 
-  saveRDS(pbmc, file = file_path)
-}
-
+# save the object
 file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,".rds")
 saveRDS_overwrite(file_path)
 # to restore

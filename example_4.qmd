@@ -1,5 +1,5 @@
 ---
-title: "Example 4"
+title: "Example #4"
 ---
 
 ## Overview
@@ -16,42 +16,9 @@ Tests and results:
 
 -   A nice demonstration of choosing a sufficient number of PCs
 
-## Environment Load and Check
+## Includes
 
-```{r}
-library(patchwork)
-library(dplyr)
-library(Seurat)
-```
-
--   Is there a typo in the message above? Application Programming Interface, **API** != **ABI**
-
--   Rolling back to R 4.3.0 was not possible with the current version of Seurat
-
-    -   the indication was that Seurat requires a version of base Matrix that is not present in R 4.3.0
-
-```{r}
-# which Seurat?
-packageVersion("Seurat")
-# which R?
-version[['version.string']]
-
-# presto was installed 
-# For a (much!) faster implementation of the 
-# Wilcoxon Rank Sum Test
-packageVersion('presto')
-```
-
-```{python}
-# check python is available via reticulate
-import sys
-print(sys.version.split(" ")[0])
-```
-
-```{bash}
-# shell check
-python3 -V
-```
+{{< include include_utils_1.qmd >}}
 
 ## Process
 
@@ -172,16 +139,10 @@ DimPlot(pbmc, reduction = "umap")
 pbmc <- RunTSNE(pbmc, dims = 1:n_pcs_chosen)
 DimPlot(pbmc, reduction = "tsne")
 
-# check-point
-saveRDS_overwrite <- function(file_path) {
-  if (file.exists(file_path)) {
-    file.remove(file_path)
-  } 
-  saveRDS(pbmc, file = file_path)
-}
-
+# save the object 
 file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,".rds")
 saveRDS_overwrite(file_path)
+
 # to restore
 # pbmc <- readRDS(file_path)
 
@@ -222,21 +183,23 @@ FeaturePlot(pbmc, features = c("LDHB", "CCR7","LEF1","PRKCQ-AS1","LDLRAP1"))
 -   Using \< 10 PCs doesn't make sense obviously (with reference to the ElbowPlot of variance by PC number) but running a series of increasing n PCs is interesting
 -   Here is what happens when 2 instead of 10 PCs are used:
 
-![2 Principal Components](img/unlabelled_umap_12_clusters_from_2_PCs.png){fig-alt="2 Principal Components"}
+![2 Principal Components (Seurat v3)](img/unlabelled_umap_12_clusters_from_2_PCs.png){fig-alt="2 Principal Components (Seurat v3)"}
 
 -   ...and when 3 instead of 10 PCs are used:
 
-[![3 Principal Components](img/unlabelled_umap_8_clusters_from_3_PCs.png){fig-alt="3 Principal Components" width="840"}](3%20Principal%20Components)
+[![3 Principal Components (Seurat v3)](img/unlabelled_umap_8_clusters_from_3_PCs.png){fig-alt="3 Principal Components (Seurat v3)" width="840"}](3%20Principal%20Components)
 
 -   ...and when 5 instead of 10 PCs are used:
 
-![5 Principal Components](img/unlabelled_umap_9_clusters_from_5_PCs.png){fig-alt="5 Principal Components" width="840"}
+![5 Principal Components (Seurat v3)](img/unlabelled_umap_9_clusters_from_5_PCs.png){fig-alt="5 Principal Components (Seurat v3)" width="840"}
 
 -   ...and when 7 (n_pcs_chosen should be set to 7, see below) instead of 10 PCs are used:
 
 ```{r}
 # just to be sure, echo this number
 n_pcs_chosen
+# which Seurat?
+packageVersion("Seurat")
 # the unlabelled clusters
 DimPlot(pbmc, reduction = "umap")
 ```
@@ -245,9 +208,11 @@ DimPlot(pbmc, reduction = "umap")
 
 ------------------------------------------------------------------------
 
-![The default labelled UMAP clusters for comparison from Example #1 used 10 PCs](img/labelled_umap_clusters_default.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1 used 10 PCs" width="840"}
+![The default labelled UMAP clusters for comparison from Example #1 used 10 PCs (Seurat 5)](img/labelled_umap_clusters_default_v5_seurat.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1 used 10 PCs (Seurat 5)" width="840"}
 
-![The default unlabelled UMAP clusters for comparison from Example #1 used 10 PCs](img/unlabelled_umap_clusters.png){fig-alt="The default unlabelled UMAP clusters for comparison from Example #1 used 10 PCs" width="840"}
+![The default labelled UMAP clusters for comparison from Example #1 used 10 PCs (Seurat 3)](img/labelled_umap_clusters_default.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1 used 10 PCs (Seurat 3)" width="840"}
+
+![The default unlabelled UMAP clusters for comparison from Example #1 used 10 PCs (Seurat 3)](img/unlabelled_umap_clusters.png){fig-alt="The default unlabelled UMAP clusters for comparison from Example #1 used 10 PCs (Seurat 3)" width="840"}
 
 ------------------------------------------------------------------------
 

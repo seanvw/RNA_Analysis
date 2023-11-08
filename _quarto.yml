@@ -16,6 +16,10 @@ website:
         text: 'Example #3'
       - href: example_4.qmd
         text: 'Example #4'
+      - href: example_5.qmd
+        text: 'Example #5'
+      - href: include_utils_1.qmd
+        text: 'Utils'
 
 format:
   html:

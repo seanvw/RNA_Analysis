@@ -1,0 +1,62 @@
+
+### Environment Load and Check
+
+-   this code section is packaged as an include for reuse across all examples
+
+```{r}
+library(patchwork)
+library(dplyr)
+library(Seurat)
+```
+
+-   Is there a typo in the message above? Application Programming Interface, **API** != **ABI**
+
+-   Rolling back to R 4.3.0 was not possible with the current version of Seurat
+
+    -   the indication was that Seurat requires a version of base Matrix that is not present in R 4.3.0
+
+```{r}
+# which Seurat?
+packageVersion("Seurat")
+# which R?
+version[['version.string']]
+
+# presto was installed 
+# For a (much!) faster implementation of the 
+# Wilcoxon Rank Sum Test
+packageVersion('presto')
+```
+
+```{python}
+# check python is available via reticulate
+import sys
+print(sys.version.split(" ")[0])
+```
+
+```{bash}
+# shell check
+python3 -V
+```
+
+### Functions
+
+```{r}
+# Useful for code development.
+# Save the object at a point and reload it into the R console 
+# i.e. for developing alternative reports 
+# without having to run the pipeline right from the start
+# which can be slow
+#
+# NB: Files produced by saveRDS (or serialized to a file connection) 
+# are not suitable as an interchange format between machines
+# 
+# For that use hdf5 or transfer data and code to reproduce the result 
+
+saveRDS_overwrite <- function(file_path) {
+  if (file.exists(file_path)) {
+    file.remove(file_path)
+  } 
+  saveRDS(pbmc, file = file_path)
+}
+
+```

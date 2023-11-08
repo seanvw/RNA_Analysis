@@ -1,5 +1,5 @@
 ---
-title: "Example 2"
+title: "Example #2"
 ---
 
 ## Overview
@@ -26,45 +26,15 @@ Tests:
 
     -   Seems like there are some better gene expression markers than IL7R e.g.s LEF1 and PRKCQ-AS1
 
-## 
+-   Seurat v3 and v5 UMAP have different default labels - v3 uppercase and v5 are lowercase. Useful for identification of versions but also the UMAP cluster rotations in 2D are different, together with some cluster separation and cluster shape aspects. Suspect Seurat is simply using a refined version of UMAP in v5.0.0.
 
-## Environment Load and Check
+## ChangeLog
 
-```{r}
-library(patchwork)
-library(dplyr)
-library(Seurat)
-```
+-   Updated to Seurat v5
 
--   Is there a typo in the message above? Application Programming Interface, **API** != **ABI**
+## Includes
 
--   Rolling back to R 4.3.0 was not possible with the current version of Seurat
-
-    -   the indication was that Seurat requires a version of base Matrix that is not present in R 4.3.0
-
-```{r}
-# which Seurat?
-packageVersion("Seurat")
-# which R?
-version[['version.string']]
-
-# presto was installed 
-# For a (much!) faster implementation of the 
-# Wilcoxon Rank Sum Test
-packageVersion('presto')
-
-```
-
-```{python}
-# check python is available via reticulate
-import sys
-print(sys.version.split(" ")[0])
-```
-
-```{bash}
-# shell check
-python3 -V
-```
+{{< include include_utils_1.qmd >}}
 
 ## Process
 
@@ -176,14 +146,7 @@ DimPlot(pbmc, reduction = "umap")
 pbmc <- RunTSNE(pbmc, dims = 1:n_pcs_chosen)
 DimPlot(pbmc, reduction = "tsne")
 
-# check-point
-saveRDS_overwrite <- function(file_path) {
-  if (file.exists(file_path)) {
-    file.remove(file_path)
-  } 
-  saveRDS(pbmc, file = file_path)
-}
-
+# save the object
 file_path <- paste0("./seurat_object_checkpoints/pbmc_sw1",EGN,".rds")
 saveRDS_overwrite(file_path)
 # to restore
@@ -238,20 +201,19 @@ new.cluster.ids <- c("Naive CD4 T", "Memory CD4 T", "CD14+ Mono",
 
 names(new.cluster.ids) <- levels(pbmc)
 pbmc <- RenameIdents(pbmc, new.cluster.ids)
-DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+DimPlot(pbmc, reduction = "umap", label = TRUE, 
+        pt.size = 0.5) + NoLegend()
 ```
 
 ------------------------------------------------------------------------
 
-![The default unlabelled UMAP clusters for comparison from Example #1](img/unlabelled_umap_clusters.png){fig-alt="The default unlabelled UMAP clusters for comparison from Example #1" width="840"}
+![The default labelled UMAP clusters for comparison from Example #1 (Seurat v5)](img/labelled_umap_clusters_default_v5_seurat.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1 (Seurat v5)"}
 
-![The default labelled UMAP clusters for comparison from Example #1](img/labelled_umap_clusters_default.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1" width="840"}
+![The default labelled UMAP clusters for comparison from Example #1 (Seurat v3)](img/labelled_umap_clusters_default.png){fig-alt="The default labelled UMAP clusters for comparison from Example #1 (Seurat v3)" width="840"}
+
+![The default unlabelled UMAP clusters for comparison from Example #1 (Seurat v3)](img/unlabelled_umap_clusters.png){fig-alt="The default unlabelled UMAP clusters for comparison from Example #1 (Seurat v3)" width="840"}
 
 ------------------------------------------------------------------------
-
--   TODO
-
-    -   Look at and compare the tSNE results - tSNEs seem to give nice separation
 
 ```{r}
 # save final 
