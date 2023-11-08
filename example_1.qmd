@@ -33,13 +33,51 @@ A version of the [pbmc3k tutorial](https://satijalab.org/seurat/articles/pbmc3k_
 
 ## Import Data
 
-### Libraries
+### ChangeLog
+
+-   Updated to Seurat v5
+
+### Environment Load and Check
 
 ```{r}
+library(patchwork)
 library(dplyr)
 library(Seurat)
-library(patchwork)
+```
 
+-   Is there a typo in the message above? Application Programming Interface, **API** != **ABI**
+
+-   Rolling back to R 4.3.0 was not possible with the current version of Seurat
+
+    -   the indication was that Seurat requires a version of base Matrix that is not present in R 4.3.0
+
+```{r}
+# which Seurat?
+packageVersion("Seurat")
+# which R?
+version[['version.string']]
+
+# presto was installed 
+# For a (much!) faster implementation of the 
+# Wilcoxon Rank Sum Test
+packageVersion('presto')
+
+```
+
+```{python}
+# check python is available via reticulate
+import sys
+print(sys.version.split(" ")[0])
+```
+
+```{bash}
+# shell check
+python3 -V
+```
+
+### Data and Config
+
+```{r}
 # Define a constant by convention to identify this example
 # To be used as part of filenames when saving objects
 # Example Number
@@ -111,6 +149,7 @@ pbmc <- CreateSeuratObject(counts = pbmc.data,
                            project = "pbmc3k", 
                            min.cells = 3, 
                            min.features = 200)
+
 # Seurat object has reduced number of features (genes)
 # and possiblly samples (cells) with harsher paremeters
 # min.cells = 50, min.features = 400
@@ -221,9 +260,18 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize",
 # Show a small sample of data
 # Again, it's a sparse matrix 
 # class(pbmc[["RNA"]]@data)
-str(pbmc[["RNA"]]@data)
+# Seurat version 3
+# str(pbmc[["RNA"]]@data)
+
+# Seurat version 5
+str(pbmc[["RNA"]]$data)
+
+# Seurat version 3
 # 10 rows, 3 columns
-pbmc[["RNA"]]@data[10:20,1:3]
+# pbmc[["RNA"]]@data[10:20,1:3]
+
+# Seurat version 5
+pbmc[["RNA"]]$data[10:20,1:3]
 ```
 
 ## Highly Variable Features
