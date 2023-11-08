@@ -356,17 +356,21 @@ Attaching package: 'SeuratObject'</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Useful for code development.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the object at a point and reload it into the R console </span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># e.g. for developing alternative reports in the next section </span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># i.e. for developing alternative reports </span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># without having to run the pipeline right from the start</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># which can be slow</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>saveRDS_overwrite <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(file_path)) {</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(file_path)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  } </span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: Files produced by saveRDS (or serialize to a file connection) </span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># are not suitable as an interchange format between machines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: Files produced by saveRDS (or serialized to a file connection) </span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># are not suitable as an interchange format between machines</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># For that use hdf5 or transfer data and code to reproduce the result </span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>saveRDS_overwrite <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(file_path)) {</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(file_path)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-and-config" class="level3">
@@ -1017,16 +1021,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:27:41 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>18:54:04 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:27:41 Read 2638 rows and found 10 numeric columns</code></pre>
+<pre><code>18:54:04 Read 2638 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:27:41 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>18:54:04 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:27:41 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>18:54:04 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -1036,13 +1040,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-18:27:41 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//Rtmpny8tGK/file155771e68e5a5
-18:27:41 Searching Annoy index using 1 thread, search_k = 3000
-18:27:42 Annoy recall = 100%
-18:27:43 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-18:27:43 Initializing from normalized Laplacian + noise (using RSpectra)
-18:27:43 Commencing optimization for 500 epochs, with 105140 positive edges
-18:27:48 Optimization finished</code></pre>
+18:54:04 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpZSdxL9/file1592b3f924c01
+18:54:04 Searching Annoy index using 1 thread, search_k = 3000
+18:54:05 Annoy recall = 100%
+18:54:05 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+18:54:06 Initializing from normalized Laplacian + noise (using RSpectra)
+18:54:06 Commencing optimization for 500 epochs, with 105140 positive edges
+18:54:11 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">

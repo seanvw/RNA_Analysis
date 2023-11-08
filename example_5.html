@@ -163,13 +163,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#example-5" id="toc-example-5" class="nav-link active" data-scroll-target="#example-5">Example 5</a>
+  <li><a href="#just-an-empty-template" id="toc-just-an-empty-template" class="nav-link active" data-scroll-target="#just-an-empty-template">Just an empty template</a></li>
+  <li><a href="#includes" id="toc-includes" class="nav-link" data-scroll-target="#includes">Includes</a>
   <ul class="collapse">
-  <li><a href="#just-an-empty-template" id="toc-just-an-empty-template" class="nav-link" data-scroll-target="#just-an-empty-template">Just an empty template</a></li>
-  <li><a href="#includes" id="toc-includes" class="nav-link" data-scroll-target="#includes">Includes</a></li>
   <li><a href="#environment-load-and-check" id="toc-environment-load-and-check" class="nav-link" data-scroll-target="#environment-load-and-check">Environment Load and Check</a></li>
   <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
   </ul></li>
+  <li><a href="#process" id="toc-process" class="nav-link" data-scroll-target="#process">Process</a></li>
+  <li><a href="#compoare-results" id="toc-compoare-results" class="nav-link" data-scroll-target="#compoare-results">Compoare results</a></li>
   </ul>
 </nav>
     </div>
@@ -193,14 +194,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="example-5" class="level2">
-<h2 class="anchored" data-anchor-id="example-5">Example 5</h2>
-<section id="just-an-empty-template" class="level3">
-<h3 class="anchored" data-anchor-id="just-an-empty-template">Just an empty template</h3>
+<section id="just-an-empty-template" class="level2">
+<h2 class="anchored" data-anchor-id="just-an-empty-template">Just an empty template</h2>
 </section>
-<section id="includes" class="level3">
-<h3 class="anchored" data-anchor-id="includes">Includes</h3>
-</section>
+<section id="includes" class="level2">
+<h2 class="anchored" data-anchor-id="includes">Includes</h2>
 <section id="environment-load-and-check" class="level3">
 <h3 class="anchored" data-anchor-id="environment-load-and-check">Environment Load and Check</h3>
 <ul>
@@ -292,21 +290,31 @@ Attaching package: 'SeuratObject'</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Useful for code development.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the object at a point and reload it into the R console </span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># e.g. for developing alternative reports in the next section </span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># i.e. for developing alternative reports </span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># without having to run the pipeline right from the start</span></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># which can be slow</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>saveRDS_overwrite <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(file_path)) {</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(file_path)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  } </span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: Files produced by saveRDS (or serialize to a file connection) </span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># are not suitable as an interchange format between machines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: Files produced by saveRDS (or serialized to a file connection) </span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># are not suitable as an interchange format between machines</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># For that use hdf5 or transfer data and code to reproduce the result </span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>saveRDS_overwrite <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">file.exists</span>(file_path)) {</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.remove</span>(file_path)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-
-
 </section>
+</section>
+<section id="process" class="level2">
+<h2 class="anchored" data-anchor-id="process">Process</h2>
+</section>
+<section id="compoare-results" class="level2">
+<h2 class="anchored" data-anchor-id="compoare-results">Compoare results</h2>
+
+
 </section>
 
 </main> <!-- /main -->
