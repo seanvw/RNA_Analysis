@@ -202,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Cells NK cluster is extended</p></li>
 <li><p>Seems like there are some better gene expression markers than IL7R e.g.s LEF1 and PRKCQ-AS1</p></li>
 </ul></li>
-<li><p>Seurat v3 and v5 UMAP have different default labels - v3 uppercase and v5 are lowercase. Useful for identification of versions but also the umap cluster rotations in 2D are different together with some cluster separation aspects.</p></li>
+<li><p>Seurat v3 and v5 UMAP have different default labels - v3 uppercase and v5 are lowercase. Useful for identification of versions but also the umap cluster rotations in 2D are different, together with some cluster separation and cluster shape aspects.</p></li>
 </ul>
 </section>
 <section id="environment-load-and-check" class="level2">
@@ -497,16 +497,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:58:41 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>14:17:42 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:58:41 Read 2643 rows and found 10 numeric columns</code></pre>
+<pre><code>14:17:42 Read 2643 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:58:41 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>14:17:42 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>13:58:41 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>14:17:42 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -516,13 +516,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-13:58:41 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmprIPUCy/file13d217ef9f1cb
-13:58:41 Searching Annoy index using 1 thread, search_k = 3000
-13:58:42 Annoy recall = 100%
-13:58:42 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-13:58:43 Initializing from normalized Laplacian + noise (using RSpectra)
-13:58:43 Commencing optimization for 500 epochs, with 105742 positive edges
-13:58:48 Optimization finished</code></pre>
+14:17:42 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpOJM88I/file13fb149369452
+14:17:42 Searching Annoy index using 1 thread, search_k = 3000
+14:17:43 Annoy recall = 100%
+14:17:43 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+14:17:44 Initializing from normalized Laplacian + noise (using RSpectra)
+14:17:44 Commencing optimization for 500 epochs, with 105742 positive edges
+14:17:49 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
