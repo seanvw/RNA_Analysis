@@ -37,7 +37,8 @@ packageVersion("Seurat")
 version[['version.string']]
 
 # presto was installed 
-# For a (much!) faster implementation of the Wilcoxon Rank Sum Test
+# For a (much!) faster implementation of the 
+# Wilcoxon Rank Sum Test
 packageVersion('presto')
 ```
 
