@@ -165,16 +165,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
-  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a>
-  <ul class="collapse">
   <li><a href="#changelog" id="toc-changelog" class="nav-link" data-scroll-target="#changelog">ChangeLog</a></li>
-  <li><a href="#includes" id="toc-includes" class="nav-link" data-scroll-target="#includes">Includes</a></li>
+  <li><a href="#includes" id="toc-includes" class="nav-link" data-scroll-target="#includes">Includes</a>
+  <ul class="collapse">
   <li><a href="#environment-load-and-check" id="toc-environment-load-and-check" class="nav-link" data-scroll-target="#environment-load-and-check">Environment Load and Check</a></li>
   <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
+  </ul></li>
   <li><a href="#data-and-config" id="toc-data-and-config" class="nav-link" data-scroll-target="#data-and-config">Data and Config</a></li>
   <li><a href="#independent-look-at-data-files" id="toc-independent-look-at-data-files" class="nav-link" data-scroll-target="#independent-look-at-data-files">Independent look at data files</a></li>
-  <li><a href="#standard-import" id="toc-standard-import" class="nav-link" data-scroll-target="#standard-import">Standard import</a></li>
-  </ul></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a></li>
   <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a>
   <ul class="collapse">
   <li><a href="#meta-data-stash-calculations-and-basis-for-filtering" id="toc-meta-data-stash-calculations-and-basis-for-filtering" class="nav-link" data-scroll-target="#meta-data-stash-calculations-and-basis-for-filtering">Meta data stash, calculations and basis for filtering</a></li>
@@ -254,17 +253,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 </section>
-<section id="import-data" class="level2">
-<h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
-<section id="changelog" class="level3">
-<h3 class="anchored" data-anchor-id="changelog">ChangeLog</h3>
+<section id="changelog" class="level2">
+<h2 class="anchored" data-anchor-id="changelog">ChangeLog</h2>
 <ul>
 <li>Updated to Seurat v5</li>
 </ul>
 </section>
-<section id="includes" class="level3">
-<h3 class="anchored" data-anchor-id="includes">Includes</h3>
-</section>
+<section id="includes" class="level2">
+<h2 class="anchored" data-anchor-id="includes">Includes</h2>
 <section id="environment-load-and-check" class="level3">
 <h3 class="anchored" data-anchor-id="environment-load-and-check">Environment Load and Check</h3>
 <ul>
@@ -373,8 +369,9 @@ Attaching package: 'SeuratObject'</code></pre>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data-and-config" class="level3">
-<h3 class="anchored" data-anchor-id="data-and-config">Data and Config</h3>
+</section>
+<section id="data-and-config" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-config">Data and Config</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a constant by convention to identify this example</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># To be used as part of filenames when saving objects</span></span>
@@ -395,8 +392,8 @@ Attaching package: 'SeuratObject'</code></pre>
 </div>
 </div>
 </section>
-<section id="independent-look-at-data-files" class="level3">
-<h3 class="anchored" data-anchor-id="independent-look-at-data-files">Independent look at data files</h3>
+<section id="independent-look-at-data-files" class="level2">
+<h2 class="anchored" data-anchor-id="independent-look-at-data-files">Independent look at data files</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># indepenedant look at files to be grounded..</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># TSVs</span></span>
@@ -472,8 +469,8 @@ Attaching package: 'SeuratObject'</code></pre>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(sparse_m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="standard-import" class="level3">
-<h3 class="anchored" data-anchor-id="standard-import">Standard import</h3>
+<section id="import-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creates dgCMatrix of all 3 files content</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>pbmc.data <span class="ot">&lt;-</span> <span class="fu">Read10X</span>(<span class="at">data.dir =</span> data_dir)</span>
@@ -502,7 +499,6 @@ Active assay: RNA (13714 features, 0 variable features)
  1 layer present: counts</code></pre>
 </div>
 </div>
-</section>
 </section>
 <section id="pre-processing" class="level2">
 <h2 class="anchored" data-anchor-id="pre-processing">Pre-processing</h2>
@@ -1021,16 +1017,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:54:04 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>19:25:48 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:54:04 Read 2638 rows and found 10 numeric columns</code></pre>
+<pre><code>19:25:48 Read 2638 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:54:04 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>19:25:48 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>18:54:04 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>19:25:48 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -1040,13 +1036,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-18:54:04 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpZSdxL9/file1592b3f924c01
-18:54:04 Searching Annoy index using 1 thread, search_k = 3000
-18:54:05 Annoy recall = 100%
-18:54:05 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-18:54:06 Initializing from normalized Laplacian + noise (using RSpectra)
-18:54:06 Commencing optimization for 500 epochs, with 105140 positive edges
-18:54:11 Optimization finished</code></pre>
+19:25:49 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpMtsT0G/file15db82e94332e
+19:25:49 Searching Annoy index using 1 thread, search_k = 3000
+19:25:50 Annoy recall = 100%
+19:25:50 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+19:25:51 Initializing from normalized Laplacian + noise (using RSpectra)
+19:25:51 Commencing optimization for 500 epochs, with 105140 positive edges
+19:25:58 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
