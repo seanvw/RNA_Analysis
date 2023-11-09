@@ -177,7 +177,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="environment-load-and-check">Environment Load and Check</h3>
 <ul>
 <li>this code section is packaged as an include for reuse across all examples</li>
+<li>it uses the HTML details tag directly to wrap code blocks and output as drop-down sections</li>
 </ul>
+<details>
+<summary>
+Show Environment
+</summary>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -258,9 +263,14 @@ Attaching package: 'SeuratObject'</code></pre>
 <pre><code>Python 3.12.0</code></pre>
 </div>
 </div>
+</details>
 </section>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<details>
+<summary>
+Show Functions
+</summary>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Useful for code development.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the object at a point and reload it into the R console </span></span>
@@ -280,6 +290,7 @@ Attaching package: 'SeuratObject'</code></pre>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</details>
 
 
 </section>

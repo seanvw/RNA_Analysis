@@ -217,7 +217,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="environment-load-and-check">Environment Load and Check</h3>
 <ul>
 <li>this code section is packaged as an include for reuse across all examples</li>
+<li>it uses the HTML details tag directly to wrap code blocks and output as drop-down sections</li>
 </ul>
+<details>
+<summary>
+Show Environment
+</summary>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -298,9 +303,14 @@ Attaching package: 'SeuratObject'</code></pre>
 <pre><code>Python 3.12.0</code></pre>
 </div>
 </div>
+</details>
 </section>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<details>
+<summary>
+Show Functions
+</summary>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Useful for code development.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the object at a point and reload it into the R console </span></span>
@@ -320,6 +330,7 @@ Attaching package: 'SeuratObject'</code></pre>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(pbmc, <span class="at">file =</span> file_path)</span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</details>
 </section>
 </section>
 <section id="process" class="level2">
@@ -534,16 +545,16 @@ To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to
 This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:29:46 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>12:09:54 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:29:46 Read 2643 rows and found 10 numeric columns</code></pre>
+<pre><code>12:09:54 Read 2643 rows and found 10 numeric columns</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:29:46 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>12:09:54 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>19:29:46 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>12:09:54 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
@@ -553,13 +564,13 @@ This message will be shown once per session</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>**************************************************|
-19:29:46 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpLSAsxl/file15ec75ed3054f
-19:29:46 Searching Annoy index using 1 thread, search_k = 3000
-19:29:47 Annoy recall = 100%
-19:29:47 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-19:29:48 Initializing from normalized Laplacian + noise (using RSpectra)
-19:29:48 Commencing optimization for 500 epochs, with 105742 positive edges
-19:29:53 Optimization finished</code></pre>
+12:09:54 Writing NN index file to temp file /var/folders/zp/wn7hdby52ds73hv9g_dxlk380000gn/T//RtmpsC2MWK/file16f8a51b53024
+12:09:54 Searching Annoy index using 1 thread, search_k = 3000
+12:09:55 Annoy recall = 100%
+12:09:55 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+12:09:56 Initializing from normalized Laplacian + noise (using RSpectra)
+12:09:56 Commencing optimization for 500 epochs, with 105742 positive edges
+12:10:00 Optimization finished</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(pbmc, <span class="at">reduction =</span> <span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
