@@ -31,17 +31,18 @@ A version of the [pbmc3k tutorial](https://satijalab.org/seurat/articles/pbmc3k_
 
     -   Paired end reads
 
-## Import Data
 
-### ChangeLog
 
--   Updated to Seurat v5
+## ChangeLog
 
-### Includes
+- These pages were originally developed based on the Seurat v3 vignette and now part updated to Seurat v5
+- Some smaller issues need addressing
+
+## Includes
 
 {{< include include_utils_1.qmd >}}
 
-### Data and Config
+## Data and Config
 
 ```{r}
 # Define a constant by convention to identify this example
@@ -62,7 +63,7 @@ list.files(path = data_dir)
 
 ```
 
-### Independent look at data files
+## Independent look at data files
 
 ```{r}
 # indepenedant look at files to be grounded..
@@ -100,7 +101,7 @@ rm(sparse_m)
 
 ```
 
-### Standard import
+## Import Data
 
 ```{r}
 # creates dgCMatrix of all 3 files content

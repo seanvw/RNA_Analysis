@@ -16,47 +16,9 @@ Tests and results:
 
 -   Updated to Seurat v5
 
-### Includes
+## Includes
 
 {{< include include_utils_1.qmd >}}
-
-## Environment Load and Check
-
-```{r}
-library(patchwork)
-library(dplyr)
-library(Seurat)
-```
-
--   Is there a typo in the message above? Application Programming Interface, **API** != **ABI**
-
--   Rolling back to R 4.3.0 was not possible with the current version of Seurat
-
-    -   the indication was that Seurat requires a version of base Matrix that is not present in R 4.3.0
-
-```{r}
-# which Seurat?
-packageVersion("Seurat")
-# which R?
-version[['version.string']]
-
-# presto was installed 
-# For a (much!) faster implementation of the 
-# Wilcoxon Rank Sum Test
-packageVersion('presto')
-
-```
-
-```{python}
-# check python is available via reticulate
-import sys
-print(sys.version.split(" ")[0])
-```
-
-```{bash}
-# shell check
-python3 -V
-```
 
 ## Process
 
