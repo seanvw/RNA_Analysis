@@ -31,12 +31,10 @@ A version of the [pbmc3k tutorial](https://satijalab.org/seurat/articles/pbmc3k_
 
     -   Paired end reads
 
-
-
 ## ChangeLog
 
-- These pages were originally developed based on the Seurat v3 vignette and now part updated to Seurat v5
-- Some smaller issues need addressing
+-   These pages were originally developed based on the Seurat v3 vignette and now part updated to Seurat v5
+-   Some smaller issues need addressing
 
 ## Includes
 

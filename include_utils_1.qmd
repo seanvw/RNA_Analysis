@@ -1,7 +1,11 @@
-
 ### Environment Load and Check
 
 -   this code section is packaged as an include for reuse across all examples
+-   it uses the HTML details tag directly to wrap code blocks and output as drop-down sections
+
+<details>
+
+<summary>Show Environment</summary>
 
 ```{r}
 library(patchwork)
@@ -38,7 +42,13 @@ print(sys.version.split(" ")[0])
 python3 -V
 ```
 
+</details>
+
 ### Functions
+
+<details>
+
+<summary>Show Functions</summary>
 
 ```{r}
 # Useful for code development.
@@ -60,3 +70,5 @@ saveRDS_overwrite <- function(file_path) {
 }
 
 ```
+
+</details>
